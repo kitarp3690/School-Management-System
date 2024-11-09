@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content %}   
+<div class="page-header">
+    <div class="row">
+       <div class="col-sm-12">
+          <h3 class="page-title">Welcome to SMS</h3>
+          <ul class="breadcrumb">
+             <li class="breadcrumb-item active">Dashboard</li>
+          </ul>
+       </div>
+    </div>
+ </div>
+<img src="{% static 'assets/img/college.jpg'%}" alt="Image Description" width="700" height="250">
+<br>
+<br>
+<style>
+    .card {
+       /* Increase the background color size */
+       padding: 40px;
+    }
+ </style>
+ 
+ <div class="row">
+    <div class="col-xl-3 col-sm-16col-12">
+       <div class="card flex-fill fb sm-box">
+          <a href="https://www.facebook.com">
+             <i class="fab fa-facebook"></i>
+          </a>
+       </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+       <div class="card flex-fill twitter sm-box">
+          <a href="https://www.twitter.com">
+             <i class="fab fa-twitter"></i>
+          </a>
+       </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+       <div class="card flex-fill insta sm-box">
+          <a href="https://www.instagram.com">
+             <i class="fab fa-instagram"></i>
+          </a>
+       </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+       <div class="card flex-fill linkedin sm-box">
+          <a href="https://www.linkedin.com">
+             <i class="fab fa-linkedin-in"></i>
+          </a>
+       </div>
+    </div>
+ </div>
+{%endblock%}

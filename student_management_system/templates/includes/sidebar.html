@@ -1,0 +1,94 @@
+{% load active_link_tags %}
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+       <div id="sidebar-menu" class="sidebar-menu">
+         {% if user.user_type == "1" %}
+          <ul>
+             <li class="menu-title">
+                <span>Main Menu</span>
+             </li>
+             <li class="{% active_link  'hod_home' 'active' %}">
+               <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
+            </li>
+             <li class="submenu {% active_link  'add_student' 'active' %} {% active_link  'view_student' 'active' %}">
+                <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+                <ul>
+                  <li><a href="{% url 'add_student' %}">Add Student</a></li>
+                  <li><a href="{% url 'view_student' %}">View Student</a></li>
+                </ul>
+             </li>
+             <li class="submenu {% active_link  'add_staff' 'active' %} {% active_link  'view_staff' 'active' %}">
+                <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+                <ul>
+                   
+                   <li><a href="{% url 'add_staff' %}"> Add Teacher</a></li>
+                   <li><a href="{% url 'view_staff'%}">View Teacher</a></li>
+                </ul>
+             </li>
+            
+             <li class="submenu {% active_link  'add_subject' 'active' %} {% active_link  'view_subject' 'active' %}">
+                <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                <ul>
+                   <li><a href="{% url 'add_subject' %}">Add Subject </a></li>
+                   <li><a href="{% url 'view_subject' %}">View Subject</a></li>
+                </ul>
+             </li>
+             <li class="menu-title">
+               
+
+             
+            <li class="{% active_link  'student_home' 'active' %}">
+               <a href="{% url 'student_home'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
+            </li>
+            <li>
+               <a href="{%url 'logout'%}"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></a>
+            </li>
+
+          </ul>
+          {% elif user.user_type == "2" %}
+          <ul>
+            <li class="menu-title">
+               <span>Main Menu</span>
+            </li>
+            <li class="{% active_link  'hod_home' 'active' %}">
+              <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
+           
+            <li class="{% active_link  'view_student' 'active' %}">
+              <a href="{% url 'view_student'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
+           </li>
+            <li class="{% active_link  'view_subject' 'active' %}">
+              <a href="{% url 'view_subject'%}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
+           </li>
+            <li class="{% active_link  'student_home' 'active' %}">
+            <a href="{% url 'student_home'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
+           </li>
+           <li>
+            <a href="{%url 'logout'%}"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></a>
+          </li>
+           </ul>
+          {% elif user.user_type == "3"%}
+          <ul>
+            <li class="menu-title">
+               <span>Main Menu</span>
+            </li>
+            <li class="{% active_link  'hod_home' 'active' %}">
+              <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
+           </li>
+           
+            <li class="{% active_link  'view_student' 'active' %}">
+              <a href="{% url 'view_student'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
+           </li>
+            <li class="{% active_link  'view_subject' 'active' %}">
+              <a href="{% url 'view_subject'%}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
+           </li> 
+           <li class="{% active_link  'student_home' 'active' %}">
+            <a href="{% url 'student_home'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
+           </li>
+           <li >
+            <a href="{%url 'logout'%}"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></a>
+          </li>
+           </ul>
+          {% endif %}
+       </div>
+    </div>
+</div>
