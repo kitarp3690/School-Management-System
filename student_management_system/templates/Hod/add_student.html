@@ -5,21 +5,12 @@
     <div class="col-sm-12">     
        <div class="card">
           <div class="card-body">
-            <form method="post" action="{% url 'add_student' %}" enctype="multipart/form-data">
+             <form method="post" action="{% url 'add_student' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                    <div class="col-12">
-                      <h5 class="form-title"><span>Add Student</span></h5>
+                               <h5 class="form-title">
+                               <span>Add Student</span></h5>
                    </div>
-                    <!-- {% if messages %}
-                         {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                              {{message}}
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                         {% endfor %}
-                      {% endif %} -->
                       {% if messages %}
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -44,8 +35,7 @@
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>Last Name</label>
-                         <input type="text" class="form-control" name="last_name" >
-                      </div>
+                         <input type="text" class="form-control" name="last_name" ></div>
                    </div>
                    <div class="col-12 col-sm-6">
                        <div class="form-group">
@@ -100,10 +90,11 @@
                     <div class="form-group">
                        <label>Password</label>
                        <input type="password" class="form-control" name="password" required>
-                 </div>
+                     </div>
+                  </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-primary">Add Student</button>
-                   </div>
+                     </div>
             </form>
           </div>
        </div>

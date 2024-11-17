@@ -42,6 +42,11 @@ def ADD_STUDENT(request):
         course_id=request.POST.get('course_id')
         session_year_id = request.POST.get('session_year_id')
 
+        # Validate if the email is a Gmail address
+        if "@gmail.com" not in email:
+            messages.error(request, 'Email must be a Gmail address ending with @gmail.com')
+            return redirect('add_student')
+        
         # Validate course_id
         if course_id == "Select Grade":
             messages.error(request, 'Please select a valid course')
