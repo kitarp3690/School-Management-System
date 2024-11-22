@@ -1,10 +1,5 @@
-{
-% extends 'base.html' %
-}
-
-{
-% block content%
-}
+{% extends 'base.html' %}
+{% block content %}
 
 <div class="row">
     <div class="col-sm-12">
@@ -16,24 +11,15 @@
 
                     <div class="col-12">
                         <h5 class="form-title"><span>Add Student</span></h5>
-                    </div> {
-                    % if messages %
-                    }
-
-                    {
-                    % for message in messages %
-                    }
-
-                    {
-                    % if message.tags=='success' %
-                    }
-
+                    </div> 
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if message.tags=='success' %}
                     <div class="alert alert-warning alert-dismissible fade show" role="alert"> {
                         {
                         message
                         }
                         }
-
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
 
                             </span></button>
