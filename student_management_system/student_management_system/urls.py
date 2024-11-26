@@ -48,6 +48,7 @@ urlpatterns = [
 
     path('Student/Home',Student_Views.Home,name='student_home'),
     path('student/View',Student_Views.VIEW_STUD,name="view_stud"),
+    path('student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
 
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

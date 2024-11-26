@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="alert alert-success">
+                    <!-- Display the success message here -->
+                    {% comment %} <p>{{ messages.get_messages }}</p> {% endcomment %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <p>You will be logged out in <span id="countdown">5</span> seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Start countdown after 2 seconds to allow the success message to be visible
+        setTimeout(function() {
+            var countdown = document.getElementById("countdown");
+            var timeLeft = 5;
+
+            var countdownTimer = setInterval(function() {
+                timeLeft--;
+                countdown.innerHTML = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = "{% url 'login' %}";  // Redirect to login page
+                }
+            }, 1000);  // Update every second
+        }, 2000);  // Wait for 2 seconds before starting the countdown
+    </script>
+{% endblock %}

@@ -51,6 +51,9 @@
                 </div>
                 </div>
                 <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                {% if user.user_type == '3' %}
+                    <a class="dropdown-item" href="{% url 'new_password' %}">Change Password</a>
+                {% endif %}
                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
         </li>
