@@ -52,7 +52,10 @@
             </li>
             <li class="{% active_link  'hod_home' 'active' %}">
               <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
-           
+            </li>
+            <li class="{% active_link  'staff_take_attendance' 'active' %}">
+               <a href="{% url 'staff_take_attendance'%}"><i class="fas fa-holly-berry"></i> <span>Take Attendance</span></a>
+             </li>
             <li class="{% active_link  'view_student' 'active' %}">
               <a href="{% url 'view_student'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
            </li>
@@ -64,7 +67,7 @@
            </li>
            <li>
             <a href="{%url 'logout'%}"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></a>
-          </li>
+           </li>
            </ul>
           {% elif user.user_type == "3"%}
           <ul>
@@ -76,7 +79,7 @@
            </li>
            
             <li class="{% active_link  'view_student' 'active' %}">
-              <a href="{% url 'view_student'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
+              <a href="{% url 'view_stud'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
            </li>
             <li class="{% active_link  'view_subject' 'active' %}">
               <a href="{% url 'view_subject'%}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>

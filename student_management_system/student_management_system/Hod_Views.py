@@ -160,7 +160,7 @@ def UPDATE_STUDENT(request):
         session_year=Session_Year.objects.get(id=session_year_id)
         student.session_year_id=session_year
         student.save()
-        print('its here')
+        # print('its here')
         messages.success(request,'Record are sucessfully Updated')
         print('its here also')
         return redirect('view_student')

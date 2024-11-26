@@ -1,14 +1,15 @@
 {% extends 'base.html'%}
-{% block content %}
+{% load static %}
+{% block content %} 
 
-<div class="row">
+{% comment %} <div class="row">
     <div class="col-sm-12">     
        <div class="card">
           <div class="card-body">
             <form method="post" action="{% url 'profile_update' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                    <div class="col-12">
-                      <h5 class="form-title"><span>Profile Update</span></h5>
+                      <h5 class="form-title"><span>My Profile</span></h5>
                    </div>
                     {% if messages %}
                             {% for message in messages %}
@@ -64,5 +65,137 @@
           </div>
        </div>
     </div>
+</div> {% endcomment %}
+
+
+{% comment %} <div class="row" style="background-color:#adff27">
+    <div class="col-sm-12">     
+       <div class="card" style="background-color:#88d3ff">
+          <div class="card-body">
+               <div class="col-12" style="background-color:#88d3ff">
+                  <h5 class="form-title" ><span style="background-color:#88d3ff">My Profile</span></h5>
+               </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <label style="color:#ff0018">Profile Pic</label><br>
+                    {% if user.profile_pic %}
+                        <img src="{{ user.profile_pic.url }}" alt="Profile Pic" class="img-thumbnail" style="max-width: 150px;">
+                    {% else %}
+                        <p style="background-color:#f43953">No profile picture uploaded.</p>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label style="color:#ff0018; font-weight: bold;">First Name</label>
+                        <p class="form-control-plaintext" style="background-color:#b9faf4">{{ user.first_name }}</p>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label style="color:#ff0018; font-weight: bold;">Last Name</label>
+                        <p class="form-control-plaintext" style="background-color:#b9faf4">{{ user.last_name }}</p>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label style="color:#ff0018; font-weight: bold;">Email</label>
+                        <p class="form-control-plaintext" style="background-color:#b9faf4">{{ user.email }}</p>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label style="color:#ff0018; font-weight: bold;">Username</label>
+                        <p class="form-control-plaintext" style="background-color:#b9faf4">{{ user.username }}</p>
+                    </div>
+                </div>
+          </div>
+       </div>
+    </div>
 </div>
+{% endblock %} {% endcomment %}
+
+{% comment %} {% endblock %} {% endcomment %}
+
+<div class="row" style="background-color: #f8f9fa; padding: 20px; border-radius: 10px;">
+    <div class="col-sm-12">     
+        <div class="card" style="background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: none;">
+            <div class="card-body">
+                <div class="col-12" style="text-align: center; margin-bottom: 20px;">
+                    <h5 class="form-title" style="font-size: 24px; font-weight: bold; color: #007bff;">
+                        My Profile
+                    </h5>
+                </div>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="form-group text-center">
+                    <label style="font-size: 16px; font-weight: bold; color: #343a40;">Profile Picture</label><br>
+                    {% if user.profile_pic %}
+                        <img src="{{ user.profile_pic.url }}" alt="Profile Pic" class="img-thumbnail" style="max-width: 150px; border: 3px solid #007bff;">
+                    {% else %}
+                        <img class="avatar-img rounded-circle" style="max-width: 150px; border: 3px solid #007bff;" title="No Image Uploaded" src="{% static 'assets/img/NoImg.png'%}" alt="No Image">
+                    {% endif %}
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">First Name</label>
+                            <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                {{ user.first_name }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Last Name</label>
+                            <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                {{ user.last_name }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Email</label>
+                            <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                {{ user.email }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Username</label>
+                            <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                {{ user.username }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

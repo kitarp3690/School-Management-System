@@ -47,5 +47,7 @@ urlpatterns = [
     #this is student Urls
 
     path('Student/Home',Student_Views.Home,name='student_home'),
+    path('student/View',Student_Views.VIEW_STUD,name="view_stud"),
+
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
