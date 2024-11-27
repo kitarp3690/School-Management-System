@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from sms.models import Course, Session_Year, CustomUser, Student, Staff, Subject
 from django.contrib import messages
-
+from django.db.models import Q
 
 @login_required(login_url='/')
 def HOME(request):
@@ -334,9 +334,85 @@ def DELETE_STAFF(request,admin):
      messages.success(request,'Staff is deleted sucessfully')
      return redirect('view_staff')
 
+def STAFF_SEND_NOTIFICATION(request):
+    return render(request,'Hod/staff_notification.html')
+
 @login_required(login_url='/')     
 def DELETE_SUBJECT(request,id):
      subject=Subject.objects.filter(id=id)
      subject.delete()
      messages.success(request,'Subject is deleted')
      return redirect('view_subject')
+
+def ADD_SESSION(request):
+    if request.method == "POST":
+        session_year_start = request.POST.get('session_year_start')
+        session_year_end = request.POST.get('session_year_end')
+
+        session = Session_Year(
+             session_start = session_year_start,
+             session_end = session_year_end
+        )
+        session.save()
+        messages.success(request, 'Session Are Successfully Created')
+        return redirect('add_session')
+    return render(request,'Hod/add_session.html')
+
+def VIEW_SESSION(request):
+    session = Session_Year.objects.all()
+
+    context = {
+        'session' : session,
+    }
+    return render(request,'Hod/view_session.html',context)
+
+def EDIT_SESSION(request,id):
+    session = Session_Year.objects.filter(id =id)
+
+    context = {
+        'session' : session,
+    }
+    return render(request,'Hod/edit_session.html',context)
+
+# def UPDATE_SESSION(request):
+#     if request.method == "POST":
+#         session_id = request.POST.get('session_id')
+#         session_year_start = request.POST.get('session_year_start')
+#         session_year_end = request.POST.get('session_year_end')
+#     session = Session_Year(
+#         id = session_id,
+#         session_start = session_year_start,
+#         session_end = session_year_end
+#     )
+
+#     session.save()
+#     messages.success(request, 'Session is successfully updated!')
+#     return redirect('view_session')
+
+
+def UPDATE_SESSION(request):
+    if request.method == "POST":
+        session_id = request.POST.get('session_id')
+        session_year_start = request.POST.get('session_year_start')
+        session_year_end = request.POST.get('session_year_end')
+        
+        # Check if another session with the same start and end year exists
+        if Session_Year.objects.filter(
+            Q(session_start=session_year_start) & 
+            Q(session_end=session_year_end) & 
+            ~Q(id=session_id)  # Exclude the current session being edited
+        ).exists():
+            messages.error(request, 'A session with the same start and end year already exists!')
+            return redirect('edit_session', id=session_id)
+
+        # Update session information
+        try:
+            session = Session_Year.objects.get(id=session_id)
+            session.session_start = session_year_start
+            session.session_end = session_year_end
+            session.save()
+            messages.success(request, 'Session is successfully updated!')
+        except Session_Year.DoesNotExist:
+            messages.error(request, 'Session not found!')
+
+    return redirect('view_session')

@@ -23,6 +23,12 @@ urlpatterns = [
     path('Hod/Student/Update',Hod_Views.UPDATE_STUDENT,name='update_student'),
     path('Hod/Student/Delete/<str:admin>',Hod_Views.DELETE_STUDENT,name='delete_student'),
 
+    #for session
+    path('Hod/Session/Add',Hod_Views.ADD_SESSION,name='add_session'),
+    path('Hod/Session/View',Hod_Views.VIEW_SESSION,name='view_session'),
+    path('Hod/Session/Edit/<str:id>',Hod_Views.EDIT_SESSION,name='edit_session'),
+    path('Hod/Session/Update',Hod_Views.UPDATE_SESSION,name='update_session'),
+
     #for subject
     path('Hod/Subject/Add',Hod_Views.ADD_SUBJECT,name="add_subject"),
     path('Hod/Subject/View',Hod_Views.VIEW_SUBJECT,name="view_subject"),
@@ -32,6 +38,7 @@ urlpatterns = [
 
 
     #for staff
+    path('Hod/Staff/Send_Notification',Hod_Views.STAFF_SEND_NOTIFICATION,name='staff_send_notification'),
     path('Hod/Staff/Add',Hod_Views.ADD_STAFF,name='add_staff'),
     path('Hod/Staff/View',Hod_Views.VIEW_STAFF,name='view_staff'),
     path('Hod/Staff/Edit/<str:id>',Hod_Views.EDIT_STAFF,name='edit_staff'),
