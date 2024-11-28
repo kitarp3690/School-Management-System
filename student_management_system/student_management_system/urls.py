@@ -36,7 +36,6 @@ urlpatterns = [
     path('Hod/Subject/Update',Hod_Views.UPDATE_SUBJECT,name="update_subject"),
     path('Hod/Subject/Delete/<str:id>',Hod_Views.DELETE_SUBJECT,name="delete_subject"),
 
-
     #for staff
     path('Hod/Staff/Send_Notification',Hod_Views.STAFF_SEND_NOTIFICATION,name='staff_send_notification'),
     path('Hod/Staff/Add',Hod_Views.ADD_STAFF,name='add_staff'),
@@ -46,6 +45,8 @@ urlpatterns = [
     path('Hod/Staff/Delete/<str:admin>',Hod_Views.DELETE_STAFF,name='delete_staff'),
     path('Staff/Home',Staff_Views.HOME,name='staff_home'),
     path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
+    path('Staff/Password',Staff_Views.STAFF_NEW_PASSWORD,name="staff_new_password"),
+
 
     #profile Update
     path('profile',views.PROFILE,name='profile'),
@@ -54,8 +55,8 @@ urlpatterns = [
     #this is student Urls
 
     path('Student/Home',Student_Views.Home,name='student_home'),
-    path('student/View',Student_Views.VIEW_STUD,name="view_stud"),
-    path('student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
+    path('Student/View',Student_Views.VIEW_STUD,name="view_stud"),
+    path('Student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
 
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

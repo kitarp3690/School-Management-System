@@ -52,6 +52,7 @@
             </li>
 
           </ul>
+
           {% elif user.user_type == "2" %}
           <ul>
             <li class="menu-title">
@@ -59,6 +60,7 @@
             </li>
             <li class="{% active_link  'hod_home' 'active' %}">
               <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
+            </li>
             </li>
             <li class="{% active_link  'staff_take_attendance' 'active' %}">
                <a href="{% url 'staff_take_attendance'%}"><i class="fas fa-holly-berry"></i> <span>Take Attendance</span></a>
