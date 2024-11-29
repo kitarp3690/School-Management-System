@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {%block content %}   
     <div class="page-header">
        <div class="row">
@@ -73,6 +73,20 @@
           </div>
        </div>
     </div>
+    <section class="container">
+      <div class="slider-wrapper">
+         <div class="slider">
+            <img id="slide-1" src="/static/assets/img/college.jpg" alt="slider image 1" />
+            <img id="slide-2" src="/static/assets/img/college-2.jpg" alt="slider image 2" />
+            <img id="slide-3" src="/static/assets/img/library.jpg" alt="slider image 3" />
+         </div>
+         <div class="slider-nav">
+            <a href='#slide-1'></a>
+            <a href='#slide-2'></a>
+            <a href='#slide-3'></a>
+         </div>
+      </div>
+    </section>
     <div class="row">
        <div class="col-md-12 col-lg-6">
           <div class="card card-chart">
@@ -175,4 +189,6 @@
  </div>
 
 {% include 'includes/chart.html' %}
-{%endblock%}
+{%endblock%} 
+
+
