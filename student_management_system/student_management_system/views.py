@@ -77,3 +77,7 @@ def PROFILE_UPDATE(request):
 #         'request': request  # Pass the request to the template context
 #     }
 #     return render(request, 'student_profile.html', context)
+
+@login_required(login_url='/')
+def ABOUT_US(request):
+    return render(request,'aboutus.html')

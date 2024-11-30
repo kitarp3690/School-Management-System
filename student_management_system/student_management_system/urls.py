@@ -58,5 +58,8 @@ urlpatterns = [
     path('Student/View',Student_Views.VIEW_STUD,name="view_stud"),
     path('Student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
 
+    #this is About Us page
+    path('About-Us',views.ABOUT_US,name="about_us"),
+
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
