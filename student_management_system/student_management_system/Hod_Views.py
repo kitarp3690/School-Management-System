@@ -42,23 +42,45 @@ def ADD_STUDENT(request):
         course_id=request.POST.get('course_id')
         session_year_id = request.POST.get('session_year_id')
 
+        content={
+            'profile_pic' : profile_pic if profile_pic else None,
+            'first_name' : first_name,
+            'last_name' : last_name,
+            'email' : email,
+            'password' : password,
+            'username' : username,
+            'address' : address,
+            'gender' : gender,
+            'course' : course,
+            'session_year' : session_year
+        }
+
         # Validate if the email is a Gmail address
         if "@gmail.com" not in email:
             messages.error(request, 'Email must be a Gmail address ending with @gmail.com')
-            return redirect('add_student')
-        
-        # Validate course_id
-        if course_id == "Select Grade":
-            messages.error(request, 'Please select a valid course')
-            return redirect('add_student')
+            return render(request,'Hod/add_student.html',content)
         
         if CustomUser.objects.filter(email=email).exists():
             messages.warning(request,'Email already taken')
-            return redirect('add_student')
+            return render(request,'Hod/add_student.html',content)
         
         if CustomUser.objects.filter(username=username).exists():
             messages.warning(request,'username already taken')
-            return redirect('add_student')
+            return render(request,'Hod/add_student.html',content)
+
+        if gender == "":
+            messages.error(request, 'Please select a valid gender')
+            return render(request,'Hod/add_student.html',content)
+        
+        # Validate course_id
+        if course_id == "":
+            messages.error(request, 'Please select a valid course')
+            return render(request,'Hod/add_student.html',content)
+        
+        if session_year == "":
+            messages.error(request, 'Please select a valid course')
+            return render(request,'Hod/add_student.html',content)
+        
         
         else:
             user=CustomUser(
@@ -103,7 +125,8 @@ def VIEW_STUDENT(request):
 
 @login_required(login_url='/')
 def EDIT_STUDENT(request,id):
-    student=Student.objects.filter(id=id)
+    student = Student.objects.filter(id=id)
+    StudentId=Student.objects.get(id=id)
     course= Course.objects.all()
     session_year = Session_Year.objects.all()
 
@@ -111,8 +134,31 @@ def EDIT_STUDENT(request,id):
         'student': student,
         'course': course,
         'session_year' : session_year,
+        'prev_session_year_start' : StudentId.session_year_id.session_start,
+        'prev_session_year_end' : StudentId.session_year_id.session_end
     }
     return render(request,'Hod/edit_student.html',context)
+
+# def EDIT_STUDENT(request, id):
+#     student = Student.objects.filter(id=id).first()  # Using .first() to get a single student
+#     course = Course.objects.all()
+#     session_year = Session_Year.objects.all()
+
+#     # Debugging: Print session start and end if student exists and has a session_year
+#     if student and student.session_year_id:
+#         print("Session Start:", student.session_year_id.session_start)
+#         print("Session End:", student.session_year_id.session_end)
+#     else:
+#         print("No session year assigned to this student.")
+
+#     context = {
+#         'student': student,
+#         'course': course,
+#         'session_year': session_year,
+#     }
+
+#     return render(request, 'Hod/edit_student.html', context)
+
 
 @login_required(login_url='/')
 def DELETE_STUDENT(request,admin):
@@ -374,22 +420,6 @@ def EDIT_SESSION(request,id):
     }
     return render(request,'Hod/edit_session.html',context)
 
-# def UPDATE_SESSION(request):
-#     if request.method == "POST":
-#         session_id = request.POST.get('session_id')
-#         session_year_start = request.POST.get('session_year_start')
-#         session_year_end = request.POST.get('session_year_end')
-#     session = Session_Year(
-#         id = session_id,
-#         session_start = session_year_start,
-#         session_end = session_year_end
-#     )
-
-#     session.save()
-#     messages.success(request, 'Session is successfully updated!')
-#     return redirect('view_session')
-
-
 def UPDATE_SESSION(request):
     if request.method == "POST":
         session_id = request.POST.get('session_id')
@@ -415,4 +445,10 @@ def UPDATE_SESSION(request):
         except Session_Year.DoesNotExist:
             messages.error(request, 'Session not found!')
 
+    return redirect('view_session')
+
+def DELETE_SESSION(request, id):
+    session = Session_Year.objects.get(id = id)
+    session.delete()
+    messages.success(request,'Session is successfully  Deleted !')
     return redirect('view_session')

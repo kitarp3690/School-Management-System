@@ -51,37 +51,45 @@
                          <input type="text" class="form-control" name="username" value="{% for i in student %}{{i.admin.username}}{% endfor %}"  >
                         </div>
                    </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label>Gender</label>
+                        <select class="form-control" name="gender" required>
+                              <option>Select Gender</option>
+                              <option value="Female" {% for i in student %}{% if i.gender == "Female" %}selected{% endif %}{% endfor %}>Female</option>
+                              <option value="Male" {% for i in student %}{% if i.gender == "Male" %}selected{% endif %}{% endfor %}>Male</option>
+                              <option value="Others" {% for i in student %}{% if i.gender == "Others" %}selected{% endif %}{% endfor %}>Others</option>
+                        </select>
+                     </div>
+                  </div>
+
                    <div class="col-12 col-sm-6">
-                         <div class="form-group" >
-                            <label>Gender</label>
-                            <select class="form-control" name="gender" value="{% for i in student %}{{i.admin.gender}}{% endfor %}" >
-                                 <option>Select Gender</option>
-                                 <option value="Female">Female</option>
-                                 <option value="Male">Male</option>
-                                 <option value="Others">Others </option>
-                            </select>
-                         </div>
-                   </div>
-                   <div class="col-12 col-sm-6">
-                            <label>Grade</label>
-                                 <select class="form-control" name="course_id" >
-                                  <option>Select Grade</option>
-                                  {% for i in course %}
-                                  <option value="{{i.id}}">{{i.name}}</option>
-                                  {% endfor %}
-                                  </select> 
+                     <label>Grade</label>
+                        <select class="form-control" name="course_id" >
+                           <option>Select Grade</option>
+                           {% for i in course %}
+                           <option value="{{i.id}}" {% for j in student %}{% if j.course_id.id == i.id %}selected{% endif %}{% endfor %} >{{i.name}}</option>
+                           {% endfor %}
+                        </select> 
+
                    </div> 
-                   <div class="col-12 col-sm-6">
-                      <div class="form-group">
-                         <label>Session Year</label>  
-                          <select class="form-control" name="session_year_id" >
+                   <br>
+
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label>Session Year</label>
+                        <select class="form-control" name="session_year_id">
                               <option>Select session year</option>
                               {% for i in session_year %}
-                              <option value="{{i.id}}"> {{i.session_start}} To {{i.session_end}}></option>
+                                 <option value="{{ i.id }}" {% for j in student %}{% if j.session_year_id.id == i.id %}selected{% endif %}{% endfor %}>
+                                    {{ i.session_start }} To {{ i.session_end }}
+                                 </option>
                               {% endfor %}
-                           </select>
+                        </select>
                      </div>
-                   </div>   
+                  </div>
+
+
                   <div class="col-sm-6">
                       <div class="form-group">
                          <label>Address</label>
