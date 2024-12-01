@@ -56,8 +56,6 @@ def NEW_PASSWORD(request):
     # return render(request,'Student/new_password.html')
 
     if request.method == "POST":
-        # student_id = request.POST.get('student_id')
-        print('its ehere')
         old_password = request.POST.get('old_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
@@ -65,6 +63,10 @@ def NEW_PASSWORD(request):
         user = request.user  # You can directly use the logged-in user
 
         print(f'op={old_password},np={new_password},cp={confirm_password}')
+        if old_password == '' or new_password=='' or confirm_password=='':
+            messages.error(request, "Please enter all field properly!")
+            return render(request,'Student/new_password.html',{'old_password':old_password,'new_password':new_password,'confirm_password':confirm_password})
+
         # Check if the old password is correct
         if not user.check_password(old_password):
             messages.error(request, "The old password you entered is incorrect.")
@@ -73,7 +75,7 @@ def NEW_PASSWORD(request):
         # Check if the new password matches the confirmation password
         if new_password != confirm_password:
             messages.error(request, "New password and confirm password do not match.")
-            return render(request,'Student/new_password.html')
+            return render(request,'Student/new_password.html',{'old_password':old_password,'new_password':new_password})
 
         # Check if the new password is the same as the old password
         if new_password == old_password:
