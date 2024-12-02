@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from sms.models import Course, Session_Year, CustomUser, Student, Staff, Subject
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, Count
 
 @login_required(login_url='/')
 def HOME(request):
@@ -11,6 +11,11 @@ def HOME(request):
     staff_count=Staff.objects.all().count()
     course_count=Course.objects.all().count()
     subject_count=Subject.objects.all().count()
+    
+    #temp for roll
+    courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
+    for course in courses_with_student_count:
+        print(f"Course: {course.name}, Number of Students: {course.student_count}")
 
     student_gender_male=Student.objects.filter(gender='Male').count()
     student_gender_female=Student.objects.filter(gender='Female').count()
@@ -30,6 +35,7 @@ def HOME(request):
 def ADD_STUDENT(request):
     course = Course.objects.all()
     session_year = Session_Year.objects.all()
+    
     if request.method=="POST":
         profile_pic = request.FILES.get('profile_pic')
         first_name = request.POST.get('first_name')
@@ -93,9 +99,20 @@ def ADD_STUDENT(request):
             )
             user.set_password(password)
             user.save()
+            
 
             course=Course.objects.get(id= course_id)
             session_year=Session_Year.objects.get(id=session_year_id)
+
+            #code for generating rollno                   
+            roll = STUDENT_ROLL(course_id)
+            padded_roll = str(roll).zfill(3)  #if roll=2 then padded_roll=002
+            main_roll = str(course) + padded_roll 
+            while Student.objects.filter(rollno=main_roll).exists():
+                # If the main_roll exists, increment the roll number by 1 and update the main_roll
+                roll += 1
+                padded_roll = str(roll).zfill(3)  # Re-pad the roll to 3 digits
+                main_roll = str(course) + padded_roll
 
 
             student=Student(
@@ -104,6 +121,7 @@ def ADD_STUDENT(request):
                 session_year_id=session_year,
                 course_id=course,
                 gender=gender,
+                rollno=main_roll
             )
             print(email,password)
             student.save()
@@ -452,3 +470,10 @@ def DELETE_SESSION(request, id):
     session.delete()
     messages.success(request,'Session is successfully  Deleted !')
     return redirect('view_session')
+
+def STUDENT_ROLL(id):
+    # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
+    # for course in courses_with_student_count:
+    #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
+    student_count = Student.objects.filter(course_id=id).count()
+    return student_count
