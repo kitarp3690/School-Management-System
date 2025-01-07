@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+#Session_Year to Batch (website ma session word use garna paideina!!!!)
 class Session_Year(models.Model):
     session_start=models.CharField(max_length=100)
     session_end=models.CharField(max_length=100)
