@@ -471,9 +471,26 @@ def DELETE_SESSION(request, id):
     messages.success(request,'Session is successfully  Deleted !')
     return redirect('view_session')
 
+def HOD_VIEW_PROFILE(request,id):
+    user = Staff.objects.get(id=id)
+    user_id = user.admin
+    context={
+        "fname" : user_id.first_name,
+        "lname" : user_id.last_name,
+        "profile_picture" : user_id.profile_pic.url if user.admin.profile_pic else None,
+        "s_grade" : user_id,
+        "s_gender" : user.gender,
+        "s_address" : user.address,
+        "s_email" : user_id.email,
+        "s_username" : user_id.username,
+
+    }
+    return render(request,'Hod/hod_view_profile.html',context)
+
 def STUDENT_ROLL(id):
     # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
     # for course in courses_with_student_count:
     #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
     student_count = Student.objects.filter(course_id=id).count()
     return student_count
+

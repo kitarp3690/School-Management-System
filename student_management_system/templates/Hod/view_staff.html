@@ -43,7 +43,7 @@
                                 {% else %}
                                     <a  class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'assets/img/NoImg.png'%}" alt="No Image"></a>
                                 {% endif %}
-                                 <a>{{i.admin.first_name}} &nbsp; {{i.admin.last_name}}</a>
+                                 <a href="{% url 'hod_view_profile' i.id %}" >{{i.admin.first_name}} &nbsp; {{i.admin.last_name}}</a>
                                </h2>
                             </td>
                             <td>{{i.admin.email}}</td>

@@ -44,10 +44,10 @@ urlpatterns = [
     path('Hod/Staff/Edit/<str:id>',Hod_Views.EDIT_STAFF,name='edit_staff'),
     path('Hod/Staff/Update',Hod_Views.UPDATE_STAFF,name='update_staff'),
     path('Hod/Staff/Delete/<str:admin>',Hod_Views.DELETE_STAFF,name='delete_staff'),
+    path('Hod/View_Profile/<int:id>/', Hod_Views.HOD_VIEW_PROFILE, name="hod_view_profile"),
     path('Staff/Home',Staff_Views.HOME,name='staff_home'),
     path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
     path('Staff/Password',Staff_Views.STAFF_NEW_PASSWORD,name="staff_new_password"),
-
 
     #profile Update
     path('profile',views.PROFILE,name='profile'),
