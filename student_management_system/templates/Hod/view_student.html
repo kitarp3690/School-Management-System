@@ -19,7 +19,8 @@
           <div class="card card-table">
              <div class="card-body">
                 <div class="table-responsive">
-                   <table class="table table-hover table-center mb-0 ">
+                   {% comment %} <table class="table table-hover table-center mb-0 "> {% endcomment %}
+                   <table id="table_id"class="table table-hover table-center mb-0 ">
                       <thead>
                          <tr>
                             {% if user.user_type == "1" or user.user_type == "2" %}
