@@ -471,7 +471,7 @@ def DELETE_SESSION(request, id):
     messages.success(request,'Session is successfully  Deleted !')
     return redirect('view_session')
 
-def HOD_VIEW_PROFILE(request,id):
+def HOD_VIEW_PROFILE_STAFF(request,id):
     user = Staff.objects.get(id=id)
     user_id = user.admin
     context={
@@ -485,7 +485,25 @@ def HOD_VIEW_PROFILE(request,id):
         "s_username" : user_id.username,
 
     }
-    return render(request,'Hod/hod_view_profile.html',context)
+    return render(request,'Hod/hod_view_profile_staff.html',context)
+
+def HOD_VIEW_PROFILE_STUDENT(request,id):
+    user = Student.objects.get(id=id)
+    user_id = user.admin
+    context={
+        "fname" : user_id.first_name,
+        "lname" : user_id.last_name,
+        "profile_picture" : user_id.profile_pic.url if user.admin.profile_pic else None,
+        "s_grade" : user_id,
+        "s_gender" : user.gender,
+        "s_address" : user.address,
+        "s_email" : user_id.email,
+        "s_username" : user_id.username,
+        "grade" : user.course_id,
+        "rollno" : user.rollno,
+        
+    }
+    return render(request,'Hod/hod_view_profile_student.html',context)
 
 def STUDENT_ROLL(id):
     # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
