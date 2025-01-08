@@ -26,14 +26,14 @@
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
                               <label>Batch Year Start</label>
-                              <input type="text" class="form-control" name="batch_id" value="{% for i in session %}{{i.id}}{% endfor %}" required hidden>
-                              <input type="text" class="form-control" name="batch_year_start" value="{% for i in session %}{{i.session_start}}{% endfor %}" required>
+                              <input type="text" class="form-control" name="batch_id" value="{% for i in batch %}{{i.id}}{% endfor %}" required hidden>
+                              <input type="text" class="form-control" name="batch_start" value="{% for i in batch %}{{i.batch_start}}{% endfor %}" required>
                            </div>
                         </div>
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
                               <label>Batch Year End</label>
-                              <input type="text" class="form-control" name="batch_year_end" value="{% for i in session %}{{i.session_end}}{% endfor %}" required>
+                              <input type="text" class="form-control" name="batch_end" value="{% for i in batch %}{{i.batch_end}}{% endfor %}" required>
                            </div>
                         </div>
                         <div class="col-12 mt-2">

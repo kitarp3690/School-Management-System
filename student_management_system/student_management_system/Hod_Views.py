@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from sms.models import Course, Session_Year, CustomUser, Student, Staff, Subject
+from sms.models import Course, Batch, CustomUser, Student, Staff, Subject
 from django.contrib import messages
 from django.db.models import Q, Count
 #for direct link access validation
@@ -46,7 +46,7 @@ def HOME(request):
 @hod_required
 def ADD_STUDENT(request):
     course = Course.objects.all()
-    session_year = Session_Year.objects.all()
+    batches = Batch.objects.all()
     
     if request.method=="POST":
         profile_pic = request.FILES.get('profile_pic')
@@ -58,7 +58,7 @@ def ADD_STUDENT(request):
         address = request.POST.get('address')
         gender = request.POST.get('gender')
         course_id=request.POST.get('course_id')
-        session_year_id = request.POST.get('session_year_id')
+        batch_id = request.POST.get('batch_id')
 
         content={
             'profile_pic' : profile_pic if profile_pic else None,
@@ -70,7 +70,7 @@ def ADD_STUDENT(request):
             'address' : address,
             'gender' : gender,
             'course' : course,
-            'session_year' : session_year
+            'batch' : batches
         }
 
         # Validate if the email is a Gmail address
@@ -95,7 +95,7 @@ def ADD_STUDENT(request):
             messages.error(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
-        if session_year == "":
+        if batch == "":
             messages.error(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
@@ -114,7 +114,7 @@ def ADD_STUDENT(request):
             
 
             course=Course.objects.get(id= course_id)
-            session_year=Session_Year.objects.get(id=session_year_id)
+            batch = Batch.objects.get(id=batch_id)
 
             #code for generating rollno                   
             roll = STUDENT_ROLL(course_id)
@@ -130,7 +130,7 @@ def ADD_STUDENT(request):
             student=Student(
                 admin=user,
                 address=address,
-                session_year_id=session_year,
+                batch_id = batch,
                 course_id=course,
                 gender=gender,
                 rollno=main_roll
@@ -141,7 +141,7 @@ def ADD_STUDENT(request):
             return redirect('add_student')
     context={
         'course' : course,
-        'session_year' : session_year,
+        'batch' : batch,
     }
     return render(request,'Hod/add_student.html',context)
 
@@ -158,14 +158,14 @@ def EDIT_STUDENT(request,id):
     student = Student.objects.filter(id=id)
     StudentId=Student.objects.get(id=id)
     course= Course.objects.all()
-    session_year = Session_Year.objects.all()
+    batch = Batch.objects.all()
 
     context={
         'student': student,
         'course': course,
-        'session_year' : session_year,
-        'prev_session_year_start' : StudentId.session_year_id.session_start,
-        'prev_session_year_end' : StudentId.session_year_id.session_end
+        'batch' : batch,
+        'prev_batch_year_start' : StudentId.batch_id.batch_start,
+        'prev_batch_year_end' : StudentId.batch_id.batch_end
     }
     return render(request,'Hod/edit_student.html',context)
 
@@ -211,7 +211,7 @@ def UPDATE_STUDENT(request):
         address = request.POST.get('address')
         gender = request.POST.get('gender')
         course_id=request.POST.get('course_id')
-        session_year_id = request.POST.get('session_year_id')
+        batch_id = request.POST.get('batch_id')
 
         user=CustomUser.objects.get(id=student_id)
         
@@ -233,8 +233,8 @@ def UPDATE_STUDENT(request):
 
         course = Course.objects.get(id=course_id)
         student.course_id=course
-        session_year=Session_Year.objects.get(id=session_year_id)
-        student.session_year_id=session_year
+        batch=Batch.objects.get(id=batch_id)
+        student.batch_id=batch
         student.save()
         # print('its here')
         messages.success(request,'Record are sucessfully Updated')
@@ -422,63 +422,63 @@ def DELETE_SUBJECT(request,id):
 
 def ADD_BATCH(request):
     if request.method == "POST":
-        batch_year_start = request.POST.get('batch_year_start')
-        batch_year_end = request.POST.get('batch_year_end')
+        batch_start = request.POST.get('batch_year_start')
+        batch_end = request.POST.get('batch_year_end')
 
-        session = Session_Year(
-             session_start = batch_year_start,
-             session_end = batch_year_end
+        batch = Batch(
+             batch_start = batch_start,
+             batch_end = batch_end
         )
-        session.save()
+        batch.save()
         messages.success(request, 'Batch is Successfully Created')
         return redirect('add_batch')
     return render(request,'Hod/add_batch.html')
 
 def VIEW_BATCH(request):
-    batches = Session_Year.objects.all()
+    batches = Batch.objects.all()
 
     context = {
-        'session' : batches,
+        'batch' : batches,
     }
     return render(request,'Hod/view_batch.html',context)
 
 def EDIT_BATCH(request,id):
-    batch = Session_Year.objects.filter(id =id)
+    batch = Batch.objects.filter(id =id)
 
     context = {
-        'session' : batch,
+        'batch' : batch,
     }
     return render(request,'Hod/edit_batch.html',context)
 
 def UPDATE_BATCH(request):
     if request.method == "POST":
         batch_id = request.POST.get('batch_id')
-        batch_year_start = request.POST.get('batch_year_start')
-        batch_year_end = request.POST.get('batch_year_end')
+        batch_start = request.POST.get('batch_start')
+        batch_end = request.POST.get('batch_end')
         
-        # Check if another session with the same start and end year exists
-        if Session_Year.objects.filter(
-            Q(session_start=batch_year_start) & 
-            Q(session_end=batch_year_end) & 
-            ~Q(id=batch_id)  # Exclude the current session being edited
+        # Check if another batch with the same start and end year exists
+        if Batch.objects.filter(
+            Q(batch_start=batch_start) & 
+            Q(batch_end=batch_end) & 
+            ~Q(id=batch_id)  # Exclude the current batch being edited
         ).exists():
-            messages.error(request, 'A session with the same start and end year already exists!')
-            return redirect('edit_session', id=batch_id)
+            messages.error(request, 'A batch with the same start and end year already exists!')
+            return redirect('edit_batch', id=batch_id)
 
         # Update session information
         try:
-            session = Session_Year.objects.get(id=batch_id)
-            session.session_start = batch_year_start
-            session.session_end = batch_year_end
-            session.save()
-            messages.success(request, 'Session is successfully updated!')
-        except Session_Year.DoesNotExist:
-            messages.error(request, 'Session not found!')
+            batch = Batch.objects.get(id=batch_id)
+            batch.batch_start = batch_start
+            batch.batch_end = batch_end
+            batch.save()
+            messages.success(request, 'Batch is successfully updated!')
+        except Batch.DoesNotExist:
+            messages.error(request, 'Batch not found!')
 
     return redirect('view_batch')
 
 def DELETE_BATCH(request, id):
-    batch = Session_Year.objects.get(id = id)
+    batch = Batch.objects.get(id = id)
     batch.delete()
     messages.success(request,'Batch is successfully  Deleted !')
     return redirect('view_batch')

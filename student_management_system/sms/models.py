@@ -14,12 +14,12 @@ class CustomUser(AbstractUser):
         return self.email
 
 #Session_Year to Batch (website ma session word use garna paideina!!!!)
-class Session_Year(models.Model):
-    session_start=models.CharField(max_length=100)
-    session_end=models.CharField(max_length=100)
+class Batch(models.Model):
+    batch_start=models.CharField(max_length=100)
+    batch_end=models.CharField(max_length=100)
     
     def __str__(self):
-        return self.session_start + " To " + self.session_end
+        return self.batch_start + " To " + self.batch_end
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
@@ -35,7 +35,7 @@ class Student(models.Model):
     gender=models.CharField(max_length=100)
     rollno = models.CharField(max_length=20, unique=True, null=True, blank=True)  
     course_id = models.ForeignKey(Course,on_delete=models.DO_NOTHING,default=1)
-    session_year_id=models.ForeignKey(Session_Year,on_delete=models.DO_NOTHING)
+    batch_id=models.ForeignKey(Batch,on_delete=models.DO_NOTHING)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
@@ -44,16 +44,6 @@ class Student(models.Model):
 
     # def __str__(self):
     #     return self.admin.first_name + " " + self.admin.last_name
-    
-class Staff(models.Model):
-    admin =models.OneToOneField(CustomUser,on_delete=models.CASCADE)
-    address=models.TextField()
-    gender=models.CharField(max_length=10)
-    created_at=models.DateTimeField(auto_now_add=True)
-    updated_at=models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.admin.username
     
 class Subject(models.Model):
     name = models.CharField(max_length=100)
@@ -64,10 +54,21 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+class Staff(models.Model):
+    admin =models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    address=models.TextField()
+    gender=models.CharField(max_length=10)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
+    subjects = models.ManyToManyField(Subject, related_name="staff_members")
+
+    def __str__(self):
+        return self.admin.username
+
 class Attendence(models.Model):
     subject_id=models.ForeignKey(Subject,on_delete=models.DO_NOTHING)
     attendence_date=models.DateField()
-    Session_Year_id=models.ForeignKey(Session_Year,on_delete=models.DO_NOTHING)
+    Session_Year_id=models.ForeignKey(Batch,on_delete=models.DO_NOTHING)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
