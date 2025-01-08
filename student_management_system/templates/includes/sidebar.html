@@ -33,11 +33,11 @@
                    <li><a href="{% url 'view_subject' %}">View Subject</a></li>
                 </ul>
              </li>
-             <li class="submenu {% active_link  'add_session' 'active' %} {% active_link  'view_session' 'active' %}">
-                <a href="#"><i class="fas fa-book-reader"></i> <span> Session </span> <span class="menu-arrow"></span></a>
+             <li class="submenu {% active_link  'add_batch' 'active' %} {% active_link  'view_batch' 'active' %}">
+                <a href="#"><i class="fas fa-book-reader"></i> <span> Batch </span> <span class="menu-arrow"></span></a>
                 <ul>
-                   <li><a href="{% url 'add_session' %}">Add Session  </a></li>
-                   <li><a href="{% url 'view_session' %}">View Session</a></li>
+                   <li><a href="{% url 'add_batch' %}">Add Batch  </a></li>
+                   <li><a href="{% url 'view_batch' %}">View Batch</a></li>
                 </ul>
              </li>
              <li class="{% active_link  'staff_send_notification' 'active' %}">

@@ -24,11 +24,11 @@ urlpatterns = [
     path('Hod/Student/Delete/<str:admin>',Hod_Views.DELETE_STUDENT,name='delete_student'),
 
     #for session
-    path('Hod/Session/Add',Hod_Views.ADD_SESSION,name='add_session'),
-    path('Hod/Session/View',Hod_Views.VIEW_SESSION,name='view_session'),
-    path('Hod/Session/Edit/<str:id>',Hod_Views.EDIT_SESSION,name='edit_session'),
-    path('Hod/Session/Update',Hod_Views.UPDATE_SESSION,name='update_session'),
-    path('Hod/Session/Delete/<str:id>',Hod_Views.DELETE_SESSION,name='delete_session'),
+    path('Hod/Batch/Add',Hod_Views.ADD_BATCH,name='add_batch'),
+    path('Hod/Batch/View',Hod_Views.VIEW_BATCH,name='view_batch'),
+    path('Hod/Batch/Edit/<str:id>',Hod_Views.EDIT_BATCH,name='edit_batch'),
+    path('Hod/Batch/Update',Hod_Views.UPDATE_BATCH,name='update_batch'),
+    path('Hod/Batch/Delete/<str:id>',Hod_Views.DELETE_BATCH,name='delete_batch'),
 
     #for subject
     path('Hod/Subject/Add',Hod_Views.ADD_SUBJECT,name="add_subject"),

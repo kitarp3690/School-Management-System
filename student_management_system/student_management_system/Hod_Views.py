@@ -3,10 +3,21 @@ from django.contrib.auth.decorators import login_required
 from sms.models import Course, Session_Year, CustomUser, Student, Staff, Subject
 from django.contrib import messages
 from django.db.models import Q, Count
+#for direct link access validation
+from django.http import HttpResponseForbidden
+from functools import wraps
+
+def hod_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.user_type == "1":  # HOD user_type
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden("ERROR")
+    return _wrapped_view
 
 @login_required(login_url='/')
 def HOME(request):
-    print("User Type:", request.user.user_type) 
+    # print("User Type:", request.user.user_type) 
     student_count=Student.objects.all().count()
     staff_count=Staff.objects.all().count()
     course_count=Course.objects.all().count()
@@ -14,8 +25,8 @@ def HOME(request):
     
     #temp for roll
     courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
-    for course in courses_with_student_count:
-        print(f"Course: {course.name}, Number of Students: {course.student_count}")
+    # for course in courses_with_student_count:
+    #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
 
     student_gender_male=Student.objects.filter(gender='Male').count()
     student_gender_female=Student.objects.filter(gender='Female').count()
@@ -32,6 +43,7 @@ def HOME(request):
 
 
 @login_required(login_url='/')
+@hod_required
 def ADD_STUDENT(request):
     course = Course.objects.all()
     session_year = Session_Year.objects.all()
@@ -408,68 +420,68 @@ def DELETE_SUBJECT(request,id):
      messages.success(request,'Subject is deleted')
      return redirect('view_subject')
 
-def ADD_SESSION(request):
+def ADD_BATCH(request):
     if request.method == "POST":
-        session_year_start = request.POST.get('session_year_start')
-        session_year_end = request.POST.get('session_year_end')
+        batch_year_start = request.POST.get('batch_year_start')
+        batch_year_end = request.POST.get('batch_year_end')
 
         session = Session_Year(
-             session_start = session_year_start,
-             session_end = session_year_end
+             session_start = batch_year_start,
+             session_end = batch_year_end
         )
         session.save()
-        messages.success(request, 'Session Are Successfully Created')
-        return redirect('add_session')
-    return render(request,'Hod/add_session.html')
+        messages.success(request, 'Batch is Successfully Created')
+        return redirect('add_batch')
+    return render(request,'Hod/add_batch.html')
 
-def VIEW_SESSION(request):
-    session = Session_Year.objects.all()
-
-    context = {
-        'session' : session,
-    }
-    return render(request,'Hod/view_session.html',context)
-
-def EDIT_SESSION(request,id):
-    session = Session_Year.objects.filter(id =id)
+def VIEW_BATCH(request):
+    batches = Session_Year.objects.all()
 
     context = {
-        'session' : session,
+        'session' : batches,
     }
-    return render(request,'Hod/edit_session.html',context)
+    return render(request,'Hod/view_batch.html',context)
 
-def UPDATE_SESSION(request):
+def EDIT_BATCH(request,id):
+    batch = Session_Year.objects.filter(id =id)
+
+    context = {
+        'session' : batch,
+    }
+    return render(request,'Hod/edit_batch.html',context)
+
+def UPDATE_BATCH(request):
     if request.method == "POST":
-        session_id = request.POST.get('session_id')
-        session_year_start = request.POST.get('session_year_start')
-        session_year_end = request.POST.get('session_year_end')
+        batch_id = request.POST.get('batch_id')
+        batch_year_start = request.POST.get('batch_year_start')
+        batch_year_end = request.POST.get('batch_year_end')
         
         # Check if another session with the same start and end year exists
         if Session_Year.objects.filter(
-            Q(session_start=session_year_start) & 
-            Q(session_end=session_year_end) & 
-            ~Q(id=session_id)  # Exclude the current session being edited
+            Q(session_start=batch_year_start) & 
+            Q(session_end=batch_year_end) & 
+            ~Q(id=batch_id)  # Exclude the current session being edited
         ).exists():
             messages.error(request, 'A session with the same start and end year already exists!')
-            return redirect('edit_session', id=session_id)
+            return redirect('edit_session', id=batch_id)
 
         # Update session information
         try:
-            session = Session_Year.objects.get(id=session_id)
-            session.session_start = session_year_start
-            session.session_end = session_year_end
+            session = Session_Year.objects.get(id=batch_id)
+            session.session_start = batch_year_start
+            session.session_end = batch_year_end
             session.save()
             messages.success(request, 'Session is successfully updated!')
         except Session_Year.DoesNotExist:
             messages.error(request, 'Session not found!')
 
-    return redirect('view_session')
+    return redirect('view_batch')
 
-def DELETE_SESSION(request, id):
-    session = Session_Year.objects.get(id = id)
-    session.delete()
-    messages.success(request,'Session is successfully  Deleted !')
-    return redirect('view_session')
+def DELETE_BATCH(request, id):
+    batch = Session_Year.objects.get(id = id)
+    batch.delete()
+    messages.success(request,'Batch is successfully  Deleted !')
+    return redirect('view_batch')
 
 def HOD_VIEW_PROFILE_STAFF(request,id):
     user = Staff.objects.get(id=id)
