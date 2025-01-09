@@ -31,9 +31,6 @@
                       <tbody>
                         {% for i in student %}
                         <tr>
-                           {% if user.user_type == "1" or user.user_type == "2" %} 
-                            <td>{{i.id}}</td>
-                           {% endif %} 
                             <td>
                                <h2 class="table-avatar">
                                 {% if i.admin.profile_pic %}
@@ -44,31 +41,11 @@
                                 {{i.admin.first_name}} &nbsp; {{i.admin.last_name}}</a>
                                </h2>
                             </td>
-                            {% if user.user_type == "1" or user.user_type == "2" %}
-                            <td>{{i.admin.email}}</td>
-                            {% endif %}
                             <td>{{i.course_id.name}}</td>
                             <td>{{i.gender}}</td>
-                            {% if user.user_type == "1" or user.user_type == "2" %}
-                            <td>{{i.address}}</td>
-                            {% endif %}
-                            <td>{{i.session_year_id.session_start}}To{{i.session_year_id.session_end}}</td>
-                            {% if user.user_type == "1"%}
-                            <td>{{i.created_at}}</td>
-                            <td>{{i.updated_at}}</td>
-                            <td class="text-right">
-                               <div class="actions">
-                                  <a href="{% url 'edit_student' i.id %}" class="btn btn-sm bg-success-light mr-2">
-                                  <i class="fas fa-pen"></i>
-                                  </a>
-                                  <a href="{% url 'delete_student' i.admin.id %}" class="btn btn-sm bg-danger-light">
-                                  <i class="fas fa-trash"></i>
-                                  </a>
-                               </div>
-                              </td>
-                              {% endif %}
-                         </tr>
-                         {% endfor %}
+                            <td>{{i.batch_id.batch_start}} To {{i.batch_id.batch_end}}</td>
+                        </tr>
+                        {% endfor %}
                       </tbody>
                    </table>
                 </div>

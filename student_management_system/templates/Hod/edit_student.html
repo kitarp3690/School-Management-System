@@ -55,7 +55,7 @@
                      <div class="form-group">
                         <label>Gender</label>
                         <select class="form-control" name="gender" required>
-                              <option>Select Gender</option>
+                              <option value='' >Select Gender</option>
                               <option value="Female" {% for i in student %}{% if i.gender == "Female" %}selected{% endif %}{% endfor %}>Female</option>
                               <option value="Male" {% for i in student %}{% if i.gender == "Male" %}selected{% endif %}{% endfor %}>Male</option>
                               <option value="Others" {% for i in student %}{% if i.gender == "Others" %}selected{% endif %}{% endfor %}>Others</option>
@@ -65,8 +65,8 @@
 
                    <div class="col-12 col-sm-6">
                      <label>Grade</label>
-                        <select class="form-control" name="course_id" >
-                           <option>Select Grade</option>
+                        <select class="form-control" name="course_id" required>
+                           <option value=''>Select Grade</option>
                            {% for i in course %}
                            <option value="{{i.id}}" {% for j in student %}{% if j.course_id.id == i.id %}selected{% endif %}{% endfor %} >{{i.name}}</option>
                            {% endfor %}
@@ -78,8 +78,8 @@
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
                         <label>Session Year</label>
-                        <select class="form-control" name="batch_id">
-                              <option>Select Batch year</option>
+                        <select class="form-control" name="batch_id" required>
+                              <option value=''>Select Batch year</option>
                               {% for i in batch %}
                                  <option value="{{ i.id }}" {% for j in student %}{% if j.batch_id.id == i.id %}selected{% endif %}{% endfor %}>
                                     {{ i.batch_start }} To {{ i.batch_end }}

@@ -23,6 +23,12 @@ def HOME(request):
     course_count=Course.objects.all().count()
     subject_count=Subject.objects.all().count()
     
+    latest_batch_id = Batch.objects.all().order_by('-batch_start').first().id
+    print(latest_batch_id)
+    previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id
+    print(previous_batch_id)
+            
+    
     #temp for roll
     courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
     # for course in courses_with_student_count:
@@ -46,7 +52,7 @@ def HOME(request):
 @hod_required
 def ADD_STUDENT(request):
     course = Course.objects.all()
-    batches = Batch.objects.all()
+    batches = Batch.objects.all().order_by('-batch_start')[:2]
     
     if request.method=="POST":
         profile_pic = request.FILES.get('profile_pic')
@@ -57,9 +63,9 @@ def ADD_STUDENT(request):
         username= request.POST.get('username')
         address = request.POST.get('address')
         gender = request.POST.get('gender')
-        course_id=request.POST.get('course_id')
+        course_id=request.POST.get('course_id')#this is grade
         batch_id = request.POST.get('batch_id')
-
+        print(f'cid={course_id},{Batch.objects.all().order_by('-batch_start')[:2][1]},b_id={batch_id}')
         content={
             'profile_pic' : profile_pic if profile_pic else None,
             'first_name' : first_name,
@@ -70,8 +76,13 @@ def ADD_STUDENT(request):
             'address' : address,
             'gender' : gender,
             'course' : course,
-            'batch' : batches
+            'batch' : batches,
         }
+
+        #latest batch id needed for validation
+        previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id
+        print(previous_batch_id)
+            
 
         # Validate if the email is a Gmail address
         if "@gmail.com" not in email:
@@ -79,7 +90,7 @@ def ADD_STUDENT(request):
             return render(request,'Hod/add_student.html',content)
         
         if CustomUser.objects.filter(email=email).exists():
-            messages.warning(request,'Email already taken')
+            messages.warning(request,'Email already takenssss')
             return render(request,'Hod/add_student.html',content)
         
         if CustomUser.objects.filter(username=username).exists():
@@ -90,12 +101,19 @@ def ADD_STUDENT(request):
             messages.error(request, 'Please select a valid gender')
             return render(request,'Hod/add_student.html',content)
         
+        # print(f'cid={course_id}{type(course_id)},b_id={batch_id}{type(batch_id)},pb_id={previous_batch_id}{type(previous_batch_id)}')
+
         # Validate course_id
         if course_id == "":
             messages.error(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
-        if batch == "":
+        # elif int(course_id)==5 and int(batch_id)==previous_batch_id:
+        #     print('its in elif')
+        #     messages.error(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
+        #     return render(request,'Hod/add_student.html',content) 
+        
+        if batch_id == "":
             messages.error(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
@@ -116,7 +134,7 @@ def ADD_STUDENT(request):
             course=Course.objects.get(id= course_id)
             batch = Batch.objects.get(id=batch_id)
 
-            #code for generating rollno                   
+            """#code for generating rollno                   
             roll = STUDENT_ROLL(course_id)
             padded_roll = str(roll).zfill(3)  #if roll=2 then padded_roll=002
             main_roll = str(course) + padded_roll 
@@ -124,7 +142,18 @@ def ADD_STUDENT(request):
                 # If the main_roll exists, increment the roll number by 1 and update the main_roll
                 roll += 1
                 padded_roll = str(roll).zfill(3)  # Re-pad the roll to 3 digits
-                main_roll = str(course) + padded_roll
+                main_roll = str(course) + padded_roll"""
+            
+            #code for generating rollno                   
+            start_roll,end_roll = STUDENT_ROLL(course_id,batch_id)
+            print(f'start_roll={start_roll},edd_roll={end_roll}')
+            padded_roll = str(end_roll).zfill(3)  #if roll=2 then padded_roll=002
+            main_roll = str(start_roll) + padded_roll 
+            while Student.objects.filter(rollno=main_roll).exists():
+                # If the main_roll exists, increment the roll number by 1 and update the main_roll
+                roll += 1
+                padded_roll = str(roll).zfill(3)  # Re-pad the roll to 3 digits
+                main_roll = str(start_roll) + padded_roll
 
 
             student=Student(
@@ -141,7 +170,7 @@ def ADD_STUDENT(request):
             return redirect('add_student')
     context={
         'course' : course,
-        'batch' : batch,
+        'batch' : batches,
     }
     return render(request,'Hod/add_student.html',context)
 
@@ -154,7 +183,9 @@ def VIEW_STUDENT(request):
     return render(request,'Hod/view_student.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def EDIT_STUDENT(request,id):
+    print(f'editid= {id}')
     student = Student.objects.filter(id=id)
     StudentId=Student.objects.get(id=id)
     course= Course.objects.all()
@@ -169,28 +200,8 @@ def EDIT_STUDENT(request,id):
     }
     return render(request,'Hod/edit_student.html',context)
 
-# def EDIT_STUDENT(request, id):
-#     student = Student.objects.filter(id=id).first()  # Using .first() to get a single student
-#     course = Course.objects.all()
-#     session_year = Session_Year.objects.all()
-
-#     # Debugging: Print session start and end if student exists and has a session_year
-#     if student and student.session_year_id:
-#         print("Session Start:", student.session_year_id.session_start)
-#         print("Session End:", student.session_year_id.session_end)
-#     else:
-#         print("No session year assigned to this student.")
-
-#     context = {
-#         'student': student,
-#         'course': course,
-#         'session_year': session_year,
-#     }
-
-#     return render(request, 'Hod/edit_student.html', context)
-
-
 @login_required(login_url='/')
+@hod_required
 def DELETE_STUDENT(request,admin):
     student=CustomUser.objects.get(id = admin)
     student.delete()
@@ -198,6 +209,7 @@ def DELETE_STUDENT(request,admin):
     return redirect('view_student')
 
 @login_required(login_url='/')
+@hod_required
 def UPDATE_STUDENT(request):
     if request.method=="POST":
         student_id=request.POST.get('student_id')
@@ -211,7 +223,7 @@ def UPDATE_STUDENT(request):
         address = request.POST.get('address')
         gender = request.POST.get('gender')
         course_id=request.POST.get('course_id')
-        batch_id = request.POST.get('batch_id')
+        batch_id = request.POST.get('batch_id')        
 
         user=CustomUser.objects.get(id=student_id)
         
@@ -238,12 +250,13 @@ def UPDATE_STUDENT(request):
         student.save()
         # print('its here')
         messages.success(request,'Record are sucessfully Updated')
-        print('its here also')
+        # print('its here also')
         return redirect('view_student')
     
     return render(request,'Hod/edit_student.html')
 
 @login_required(login_url='/')
+@hod_required
 def ADD_SUBJECT(request):
     course = Course.objects.all()
     # staff= Staff.objects.all()
@@ -268,6 +281,7 @@ def ADD_SUBJECT(request):
     return render(request,'Hod/add_subject.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def ADD_STAFF(request):
     if request.method =="POST":
         profile_pic = request.FILES.get('profile_pic')
@@ -304,6 +318,7 @@ def ADD_STAFF(request):
     return render(request,'Hod/add_staff.html')
 
 @login_required(login_url='/')
+@hod_required
 def EDIT_SUBJECT(request,id):
      subject= Subject.objects.get(id= id)
      course=Course.objects.all()
@@ -314,6 +329,7 @@ def EDIT_SUBJECT(request,id):
      return render(request,'Hod/edit_subject.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def UPDATE_SUBJECT(request):
     
     if request.method == "POST":
@@ -354,6 +370,7 @@ def VIEW_SUBJECT(request):
      return render(request,'Hod/view_subject.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def VIEW_STAFF(request):
     staff=Staff.objects.all()
     context={
@@ -362,6 +379,7 @@ def VIEW_STAFF(request):
     return render(request,'Hod/view_staff.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def EDIT_STAFF(request,id):
     staff=Staff.objects.get(id=id)
     context={
@@ -370,6 +388,7 @@ def EDIT_STAFF(request,id):
     return render(request,'Hod/edit_staff.html',context)
 
 @login_required(login_url='/')
+@hod_required
 def UPDATE_STAFF(request):
     if request.method=="POST":
         staff_id =  request.POST.get('staff_id')
@@ -404,6 +423,7 @@ def UPDATE_STAFF(request):
     return render(request,'Hod/edit_staff.html')
 
 @login_required(login_url='/')
+@hod_required
 def DELETE_STAFF(request,admin):
      staff=CustomUser.objects.get(id=admin)
      staff.delete()
@@ -413,13 +433,16 @@ def DELETE_STAFF(request,admin):
 def STAFF_SEND_NOTIFICATION(request):
     return render(request,'Hod/staff_notification.html')
 
-@login_required(login_url='/')     
+@login_required(login_url='/')
+@hod_required     
 def DELETE_SUBJECT(request,id):
      subject=Subject.objects.filter(id=id)
      subject.delete()
      messages.success(request,'Subject is deleted')
      return redirect('view_subject')
 
+@login_required(login_url='/')
+@hod_required
 def ADD_BATCH(request):
     if request.method == "POST":
         batch_start = request.POST.get('batch_year_start')
@@ -434,6 +457,8 @@ def ADD_BATCH(request):
         return redirect('add_batch')
     return render(request,'Hod/add_batch.html')
 
+@login_required(login_url='/')
+@hod_required
 def VIEW_BATCH(request):
     batches = Batch.objects.all()
 
@@ -442,6 +467,8 @@ def VIEW_BATCH(request):
     }
     return render(request,'Hod/view_batch.html',context)
 
+@login_required(login_url='/')
+@hod_required
 def EDIT_BATCH(request,id):
     batch = Batch.objects.filter(id =id)
 
@@ -450,6 +477,8 @@ def EDIT_BATCH(request,id):
     }
     return render(request,'Hod/edit_batch.html',context)
 
+@login_required(login_url='/')
+@hod_required
 def UPDATE_BATCH(request):
     if request.method == "POST":
         batch_id = request.POST.get('batch_id')
@@ -477,12 +506,16 @@ def UPDATE_BATCH(request):
 
     return redirect('view_batch')
 
+@login_required(login_url='/')
+@hod_required
 def DELETE_BATCH(request, id):
     batch = Batch.objects.get(id = id)
     batch.delete()
     messages.success(request,'Batch is successfully  Deleted !')
     return redirect('view_batch')
 
+@login_required(login_url='/')
+@hod_required
 def HOD_VIEW_PROFILE_STAFF(request,id):
     user = Staff.objects.get(id=id)
     user_id = user.admin
@@ -499,6 +532,8 @@ def HOD_VIEW_PROFILE_STAFF(request,id):
     }
     return render(request,'Hod/hod_view_profile_staff.html',context)
 
+@login_required(login_url='/')
+@hod_required
 def HOD_VIEW_PROFILE_STUDENT(request,id):
     user = Student.objects.get(id=id)
     user_id = user.admin
@@ -517,10 +552,19 @@ def HOD_VIEW_PROFILE_STUDENT(request,id):
     }
     return render(request,'Hod/hod_view_profile_student.html',context)
 
-def STUDENT_ROLL(id):
+"""def STUDENT_ROLL(id):
     # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
     # for course in courses_with_student_count:
     #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
     student_count = Student.objects.filter(course_id=id).count()
-    return student_count
+    return student_count"""
+
+def STUDENT_ROLL(s_id,b_id):
+    # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
+    # for course in courses_with_student_count:
+    #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
+    student_count = Student.objects.filter(course_id=s_id).count()
+    student_batch = Batch.objects.get(id=b_id)
+    starting_roll = student_batch.batch_start
+    return starting_roll,student_count
 

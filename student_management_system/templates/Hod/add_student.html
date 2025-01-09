@@ -75,11 +75,11 @@
                    <br>
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
-                         <label>Session Year</label>  
-                          <select class="form-control" name="session_year_id" required>
-                              <option value=''>Select session year</option>
-                              {% for i in session_year %}
-                              <option value="{{i.id}}"> {{i.session_start}} To {{i.session_end}}</option>
+                         <label>Batch Year</label>  
+                          <select class="form-control" name="batch_id" required>
+                              <option value=''>Select batch year</option>
+                              {% for i in batch %}
+                              <option value="{{i.id}}"> {{i.batch_start}} To {{i.batch_end}}</option>
                               {% endfor %}
                            </select>
                      </div>
