@@ -45,17 +45,20 @@ def STAFF_NEW_PASSWORD(request):
 
     return render(request, 'Staff/staff_new_password.html')
 
-# def VIEW_SUBJECTS(request,id):
-#     staff = Staff.objects.get(admin_id=id)
-#     subjects = Subject.objects.filter(id=staff.subject_id)
-#     context={
-#         'staff_subjects':subjects,
-#     }
-#     return render(request,'Staff/staff_view_subjects.html',context)
-def VIEW_SUBJECTS(request, id):
+def STAFF_VIEW_SUBJECTS(request, id):
     staff = Staff.objects.get(admin_id=id)
-    subjects = Subject.objects.filter(id=staff.subject_id_id)  # Get the subject by its ID
+    subjects = Subject.objects.filter(id=staff.subject_id_id) 
     context = {
-        'staff_subjects': subjects,  # List of subjects for that staff (though there will only be one subject)
+        'staff_subjects': subjects, 
     }
     return render(request, 'Staff/staff_view_subjects.html', context)
+
+def STAFF_VIEW_STUDENTS(request,id):
+    staff = Staff.objects.get(admin_id=id)
+    subjects = Subject.objects.filter(id=staff.subject_id_id) 
+    # Get all students affiliated with these subjects
+    students = Student.objects.filter(course_id__in=subjects.values('course_id'))
+    context={
+        'affiliated_students': students,
+    }
+    return render(request, 'Staff/staff_view_students.html', context)

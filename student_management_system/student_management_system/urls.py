@@ -49,7 +49,8 @@ urlpatterns = [
     path('Staff/Home',Staff_Views.HOME,name='staff_home'),
     path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
     path('Staff/Password',Staff_Views.STAFF_NEW_PASSWORD,name="staff_new_password"),
-    path('Staff/Subjects/<str:id>',Staff_Views.VIEW_SUBJECTS,name="staff_view_subjects"),
+    path('Staff/Subjects/<str:id>',Staff_Views.STAFF_VIEW_SUBJECTS,name="staff_view_subjects"),
+    path('Staff/Students/<str:id>',Staff_Views.STAFF_VIEW_STUDENTS,name="staff_view_students"),
 
     #profile Update
     path('profile',views.PROFILE,name='profile'),
