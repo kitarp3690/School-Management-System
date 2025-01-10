@@ -45,19 +45,6 @@ def STAFF_NEW_PASSWORD(request):
 
     return render(request, 'Staff/staff_new_password.html')
 
-# def STAFF_VIEW_SUBJECTS(request, id):
-#     staff = Staff.objects.get(admin_id=id)
-#     all_subjects = Subject.objects.all() 
-#     subjects = Subject.objects.filter(id=staff.subject_id_id)
-#     assigned_subject = staff.subject_id_id
-#     remaining_subjects = all_subjects.exclude(id=assigned_subject)
-
-#     context = {
-#         'staff_subjects': subjects, 
-#         'remaining_subjects ': remaining_subjects,
-#     }
-#     return render(request, 'Staff/staff_view_subjects.html', context)
-
 def STAFF_VIEW_SUBJECTS(request, id):
     staff = Staff.objects.get(admin_id=id)
     assigned_subjects = staff.subjects.all()
@@ -71,13 +58,6 @@ def STAFF_VIEW_SUBJECTS(request, id):
 
 
 def STAFF_VIEW_STUDENTS(request,id):
-    # staff = Staff.objects.get(admin_id=id)
-    # subjects = Subject.objects.filter(id=staff.subject_id_id) 
-    # # Get all students affiliated with these subjects
-    # students = Student.objects.filter(course_id__in=subjects.values('course_id'))
-    # context={
-    #     'affiliated_students': students,
-    # }
     staff = Staff.objects.get(admin_id=id)
     
     # Get all subjects assigned to this staff member

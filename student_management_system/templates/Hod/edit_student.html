@@ -22,11 +22,23 @@
                             {% endif %}
                             {% endfor %}
                             {% endif %}
-                      <div class="form-group">
+                      {% comment %} <div class="form-group">
                          <label> Profile Pic</label>
                          <input type="file" class="form-control" name="profile_pic" >
                          <input type="text" class="form-control" name="student_id" value="{% for i in student %}{{i.admin.id}}{%endfor%}" hidden>
-                      </div>
+                      </div> {% endcomment %}
+                      <div class="form-group">
+                        <label>Profile Pic</label>
+                        <!-- Display existing profile picture -->
+                        {% if staff.admin.profile_pic %}
+                           <img src="{{ student.admin.profile_pic.url }}" alt="Profile Picture" style="max-width: 150px; margin-bottom: 10px;">
+                        {% else %}
+                           <p>No profile picture available.</p>
+                        {% endif %}
+                        <!-- File input for uploading a new profile picture -->
+                        <input type="file" class="form-control" name="profile_pic">
+                        <input type="text" class="form-control" name="student_id" value="{{ student.admin.id }}" hidden>
+                     </div>
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>First Name</label>

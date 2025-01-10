@@ -381,13 +381,14 @@ def VIEW_STAFF(request):
 @login_required(login_url='/')
 @hod_required
 def EDIT_STAFF(request,id):
+    # staff = Staff.objects.get(admin_id=id)
     staff=Staff.objects.get(id=id)
-    all_subjects = Subject.objects.all()  # Get all available subjects
-    assigned_subjects = staff.subjects.all()  # Get subjects assigned to the staff
+    assigned_subjects = staff.subjects.all()
+    remaining_subjects = Subject.objects.exclude(id__in=assigned_subjects.values_list('id', flat=True)) 
     context={
         'staff':staff,
-        'all_subjects': all_subjects,
         'assigned_subjects': assigned_subjects,
+        'remaining_subjects': remaining_subjects
     }
     return render(request,'Hod/edit_staff.html',context)
 
@@ -405,6 +406,10 @@ def UPDATE_STAFF(request):
         address = request.POST.get('address')
         gender = request.POST.get('gender')
         subjects = request.POST.getlist('subjects')
+        remaining_sub = request.POST.getlist('remaining_subjects')
+
+        # Combine subjects and remaining_sub
+        all_subjects = list(set(subjects + remaining_sub))
 
         user = CustomUser.objects.get(id=staff_id)
         user.username=username
@@ -421,8 +426,8 @@ def UPDATE_STAFF(request):
         staff = Staff.objects.get(admin=staff_id)
         staff.gender=gender
         staff.address=address
-        if subjects:  # Update subjects only if provided
-            staff.subjects.set(subjects)
+        if all_subjects:  # Update subjects only if provided
+            staff.subjects.set(all_subjects)
         staff.save()
         messages.success(request,'Staff is successfully updated')
         return redirect('view_staff')
