@@ -382,8 +382,12 @@ def VIEW_STAFF(request):
 @hod_required
 def EDIT_STAFF(request,id):
     staff=Staff.objects.get(id=id)
+    all_subjects = Subject.objects.all()  # Get all available subjects
+    assigned_subjects = staff.subjects.all()  # Get subjects assigned to the staff
     context={
         'staff':staff,
+        'all_subjects': all_subjects,
+        'assigned_subjects': assigned_subjects,
     }
     return render(request,'Hod/edit_staff.html',context)
 
@@ -400,6 +404,7 @@ def UPDATE_STAFF(request):
         username= request.POST.get('username')
         address = request.POST.get('address')
         gender = request.POST.get('gender')
+        subjects = request.POST.getlist('subjects')
 
         user = CustomUser.objects.get(id=staff_id)
         user.username=username
@@ -416,6 +421,8 @@ def UPDATE_STAFF(request):
         staff = Staff.objects.get(admin=staff_id)
         staff.gender=gender
         staff.address=address
+        if subjects:  # Update subjects only if provided
+            staff.subjects.set(subjects)
         staff.save()
         messages.success(request,'Staff is successfully updated')
         return redirect('view_staff')

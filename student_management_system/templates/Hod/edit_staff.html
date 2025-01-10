@@ -62,7 +62,20 @@
                             </select>
                          </div>
                    </div>
-                   
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                      <label>Assign Subjects</label>
+                      <select class="form-control" name="subjects" multiple>
+                           {% for subject in all_subjects %}
+                              <option value="{{ subject.id }}" 
+                                       {% if subject in assigned_subjects %}selected{% endif %}>
+                                 {{ subject.name }}
+                              </option>
+                           {% endfor %}
+                      </select>
+                      <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple subjects.</small>
+                     </div>
+                  </div>
                   <div class="col-sm-6">
                       <div class="form-group">
                          <label>Address</label>

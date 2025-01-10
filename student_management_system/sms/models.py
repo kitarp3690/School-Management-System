@@ -60,8 +60,8 @@ class Staff(models.Model):
     gender=models.CharField(max_length=10)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    subject_id=models.ForeignKey(Subject,on_delete=models.DO_NOTHING,default=6)
-    # subjects = models.ManyToManyField(Subject, related_name="staff_members")
+    # subject_id=models.ForeignKey(Subject,on_delete=models.DO_NOTHING,default=6)
+    subjects = models.ManyToManyField(Subject, related_name="staff_members")
 
     def __str__(self):
         return self.admin.username
