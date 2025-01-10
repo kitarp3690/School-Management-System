@@ -29,16 +29,19 @@
                       </div> {% endcomment %}
                       <div class="form-group">
                         <label>Profile Pic</label>
-                        <!-- Display existing profile picture -->
-                        {% if staff.admin.profile_pic %}
-                           <img src="{{ student.admin.profile_pic.url }}" alt="Profile Picture" style="max-width: 150px; margin-bottom: 10px;">
-                        {% else %}
-                           <p>No profile picture available.</p>
-                        {% endif %}
-                        <!-- File input for uploading a new profile picture -->
-                        <input type="file" class="form-control" name="profile_pic">
-                        <input type="text" class="form-control" name="student_id" value="{{ student.admin.id }}" hidden>
+                        {% for stud in student %}
+                           <!-- Display existing profile picture -->
+                           {% if stud.admin.profile_pic %}
+                              <img src="{{ stud.admin.profile_pic.url }}" alt="Profile Picture" style="max-width: 150px; margin-bottom: 10px;">
+                           {% else %}
+                              <p>No profile picture available.</p>
+                           {% endif %}
+                           <!-- File input for uploading a new profile picture -->
+                           <input type="file" class="form-control" name="profile_pic">
+                           <input type="text" class="form-control" name="student_id" value="{{ stud.admin.id }}" hidden>
+                        {% endfor %}
                      </div>
+
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>First Name</label>
