@@ -69,9 +69,22 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Gender</label>
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Assigned Subjects</label>
                             <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
-                                {{ s_gender }}
+                                {% for subject in assigned_subjects %}
+                                    <span>{{ subject.name }}</span><br>
+                                {% empty %}
+                                    <span>No subjects assigned.</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Address</label>
+                            <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                {{ s_address }}
                             </p>
                         </div>
                     </div>

@@ -530,6 +530,7 @@ def DELETE_BATCH(request, id):
 @hod_required
 def HOD_VIEW_PROFILE_STAFF(request,id):
     user = Staff.objects.get(id=id)
+    assigned_subjects = user.subjects.all()
     user_id = user.admin
     context={
         "fname" : user_id.first_name,
@@ -540,6 +541,7 @@ def HOD_VIEW_PROFILE_STAFF(request,id):
         "s_address" : user.address,
         "s_email" : user_id.email,
         "s_username" : user_id.username,
+        "assigned_subjects": assigned_subjects,
 
     }
     return render(request,'Hod/hod_view_profile_staff.html',context)

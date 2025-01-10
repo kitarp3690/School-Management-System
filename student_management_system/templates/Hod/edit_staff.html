@@ -79,12 +79,16 @@
                      <div class="form-group">
                       <label>Assigned Subjects</label>
                       <select class="form-control" name="subjects" multiple>
+                        {% if assigned_subjects %}
                            {% for subject in assigned_subjects %}
                               <option value="{{ subject.id }}" 
                                        {% if subject in assigned_subjects %}selected{% endif %}>
                                  {{ subject.name }}
                               </option>
                            {% endfor %}
+                        {% else %}
+                           <option value="" disabled>No subjects assigned</option>
+                        {% endif %}
                       </select>
                       <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple subjects.</small>
                      </div>
