@@ -88,6 +88,29 @@
                             </p>
                         </div>
                     </div>
+                    {% comment %} <td class="text-center">
+                        <div class="actions">
+                            <a href="{% url 'edit_staff' staff_id %}" class="btn btn-sm bg-success-light mr-2">
+                            <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{% url 'delete_staff' staff_main_id %}" class="btn btn-sm bg-danger-light">
+                            <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td> {% endcomment %}
+                    <div class="col-md-12 text-center">
+                        <div class="form-group">
+                            <label style="font-size: 16px; font-weight: bold; color: #343a40;">Actions</label>
+                            <div class="actions">
+                                <a href="{% url 'edit_staff' staff_id %}" class="btn btn-sm bg-success-light mr-2">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="{% url 'delete_staff' staff_main_id %}" class="btn btn-sm bg-danger-light">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

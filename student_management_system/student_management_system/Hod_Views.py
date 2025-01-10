@@ -532,6 +532,7 @@ def HOD_VIEW_PROFILE_STAFF(request,id):
     user = Staff.objects.get(id=id)
     assigned_subjects = user.subjects.all()
     user_id = user.admin
+    print(f"user_id={id}, mainid={user_id.id}")
     context={
         "fname" : user_id.first_name,
         "lname" : user_id.last_name,
@@ -542,7 +543,8 @@ def HOD_VIEW_PROFILE_STAFF(request,id):
         "s_email" : user_id.email,
         "s_username" : user_id.username,
         "assigned_subjects": assigned_subjects,
-
+        "staff_id" : id,
+        "staff_main_id": user_id.id
     }
     return render(request,'Hod/hod_view_profile_staff.html',context)
 
