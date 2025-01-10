@@ -564,7 +564,8 @@ def HOD_VIEW_PROFILE_STUDENT(request,id):
         "s_username" : user_id.username,
         "grade" : user.course_id,
         "rollno" : user.rollno,
-        
+        "stud_id": id,
+        "stud_main_id": user_id.id,
     }
     return render(request,'Hod/hod_view_profile_student.html',context)
 
