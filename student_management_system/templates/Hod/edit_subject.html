@@ -33,11 +33,11 @@
                         <div class="col-12 col-sm-6">
                             <label>Class</label>
                                  <select class="form-control" name="course_id" required>
-                                     <option>Select Class</option>
+                                     <option value="">Select Class</option>
                                      {% for i in course %}
-                                     <option value="{{i.id}}">{{i.name}}</option>
+                                     <option value="{{i.id}}" {% if i.id == subject_course %}selected{% endif %} >{{i.name}}</option>
                                      {% endfor %}
-                                  </select>
+                                 </select>
                         </div>
                         <div class="col-12 mt-2">
                            <button type="submit" class="btn btn-primary">Update</button>

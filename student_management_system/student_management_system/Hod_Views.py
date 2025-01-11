@@ -322,9 +322,11 @@ def ADD_STAFF(request):
 def EDIT_SUBJECT(request,id):
      subject= Subject.objects.get(id= id)
      course=Course.objects.all()
+     subject_course = subject.course.id
      context={
          'subject':subject,
          'course':course,
+         'subject_course': subject_course
      }
      return render(request,'Hod/edit_subject.html',context)
 
@@ -357,7 +359,7 @@ def UPDATE_SUBJECT(request):
 
         except ValueError as ve:
             # If a ValueError occurs (invalid course selection), display an error message to the user
-            messages.error(request,"Class can't be empty")
+            messages.error(request,"Please select valid course")
             return redirect('edit_subject', id=subject_id)
 
 @login_required(login_url='/')
