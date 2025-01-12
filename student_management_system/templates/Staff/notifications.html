@@ -22,7 +22,8 @@
                    <table id="table_id"class="table table-hover table-center mb-0 ">
                       <thead>
                          <tr>
-                            <th>message</th>
+                            <th>Message</th>
+                            <th>Sent Time</th>
                             <th class="text-right">Action</th>
                          </tr>
                       </thead>
@@ -30,6 +31,7 @@
                         {% for i in notification %}
                         <tr>
                             <td>{{i.message}}</td>
+                            <td>{{ i.created_at|date:"D, d M Y H:i:s" }}</td>
                             <td class="text-right">
                                 <div class="actions">
                                     {% if i.status == 0 %}
