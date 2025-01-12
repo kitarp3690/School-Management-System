@@ -71,6 +71,9 @@
             <li class="{% active_link  'view_subject' 'active' %}">
               <a href="{% url 'staff_view_subjects' user.id %}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
            </li>
+           <li class="{% active_link  'staff_send_notification' 'active' %}">
+                <a href="{% url 'notifications' %}"><i class= "fa fa-bell"></i> <span> Notification</span></a>
+             </li>
            <li class="{% active_link  'about_us' 'active' %}">
                <a href="{% url 'about_us'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
             </li>
