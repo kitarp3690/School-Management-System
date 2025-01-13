@@ -43,6 +43,10 @@
              <li class="{% active_link  'staff_send_notification' 'active' %}">
                 <a href="{% url 'staff_send_notification' %}"><i class= "fa fa-bell"></i> <span> Send Staff Notification</span></a>
              </li>
+             </li>
+             <li class="{% active_link  'student_send_notification' 'active' %}">
+                <a href="{% url 'student_send_notification' %}"><i class= "fa fa-bell"></i> <span> Send Student Notification</span></a>
+             </li>
              <li class="menu-title">
             <li class="{% active_link  'about_us' 'active' %}">
                <a href="{% url 'about_us'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
@@ -65,13 +69,13 @@
             <li class="{% active_link  'staff_take_attendance' 'active' %}">
                <a href="{% url 'staff_take_attendance'%}"><i class="fas fa-holly-berry"></i> <span>Take Attendance</span></a>
              </li>
-            <li class="{% active_link  'view_student' 'active' %}">
+            <li class="{% active_link  'staff_view_students' 'active' %}">
               <a href="{% url 'staff_view_students' user.id%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
            </li>
-            <li class="{% active_link  'view_subject' 'active' %}">
+            <li class="{% active_link  'staff_view_subjects' 'active' %}">
               <a href="{% url 'staff_view_subjects' user.id %}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
            </li>
-           <li class="{% active_link  'staff_send_notification' 'active' %}">
+           <li class="{% active_link  'notifications' 'active' %}">
                 <a href="{% url 'notifications' %}"><i class= "fa fa-bell"></i> <span> Notification</span></a>
              </li>
            <li class="{% active_link  'about_us' 'active' %}">
@@ -96,6 +100,9 @@
             <li class="{% active_link  'view_subject' 'active' %}">
               <a href="{% url 'view_subject'%}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
            </li> 
+             <li class="{% active_link  'student_notification' 'active' %}">
+                <a href="{% url 'student_notification' %}"><i class= "fa fa-bell"></i> <span> Notification</span></a>
+             </li>
             <li class="{% active_link  'about_us' 'active' %}">
                <a href="{% url 'about_us'%}"><i class="fas fa fa-info-circle"></i> <span>About Us</span></a>
             </li>

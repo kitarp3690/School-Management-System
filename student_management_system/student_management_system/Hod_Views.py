@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification
+from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification, Student_Notification
 from django.contrib import messages
 from django.db.models import Q, Count
 #for direct link access validation
@@ -609,3 +609,26 @@ def SAVE_STAFF_NOTIFICATION(request):
         notification.save()
         messages.success(request, 'Notification sent successfully')
     return redirect('staff_send_notification')
+
+def STUDENT_SEND_NOTIFICATION(request):
+    student = Student.objects.all()
+    see_notification = Student_Notification.objects.all()  #0:5 to show only 5 message
+    context={
+        'student': student,
+        'see_notification': see_notification,
+    }
+    return render(request,'Hod/student_notification.html',context)
+
+def SAVE_STUDENT_NOTIFICATION(request):
+    if request.method == "POST":
+        student_id = request.POST.get('student_id')
+        message = request.POST.get('message')
+        student = Student.objects.get(admin = student_id)
+        stud_notification = Student_Notification(
+            student_id = student,
+            message = message,
+        )
+        stud_notification.save()
+        messages.success(request, 'Notification sent successfully')
+    return redirect('student_send_notification')
+

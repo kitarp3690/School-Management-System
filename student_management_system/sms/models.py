@@ -93,3 +93,12 @@ class Staff_Notification(models.Model):
 
     def __str__(self):
         return self.staff_id.admin.first_name
+    
+class Student_Notification(models.Model):
+    student_id =  models.ForeignKey(Student,on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(null=True,default=0)
+
+    def __str__(self):
+        return self.student_id.admin.first_name

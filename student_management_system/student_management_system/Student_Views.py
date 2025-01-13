@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from sms.models import Student
+from sms.models import Student, Student_Notification
 from django.contrib import messages
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
@@ -56,6 +56,20 @@ def NEW_PASSWORD(request):
         messages.success(request, "Your password has been successfully updated.")
         # Redirect to the login page after success and countdown
         return render(request, 'Student/logout_countdown.html')
-
-
     return render(request, 'Student/new_password.html')
+
+def STUDENT_NOTIFICATION(request):
+    student = Student.objects.filter(admin = request.user.id)
+    for i in student:
+        student_id = i.id
+    notification = Student_Notification.objects.filter(student_id_id = student_id)
+    context = {
+        'notification': notification,
+    }
+    return render(request,'Student/notification.html',context)
+
+def STUDENT_NOTIFICATION_MARK(request,status):
+    notification = Student_Notification.objects.get(id= status)
+    notification.status = 1
+    notification.save()
+    return redirect('student_notification')

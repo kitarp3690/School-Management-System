@@ -65,6 +65,10 @@ urlpatterns = [
     path('Student/Home',Student_Views.Home,name='student_home'),
     path('Student/View',Student_Views.VIEW_STUD,name="view_stud"),
     path('Student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
+    path('Hod/Student/Send_Notification',Hod_Views.STUDENT_SEND_NOTIFICATION,name='student_send_notification'),
+    path('Hod/Student/Save_Notification',Hod_Views.SAVE_STUDENT_NOTIFICATION,name='save_student_notification'),
+    path('Student/Notifications',Student_Views.STUDENT_NOTIFICATION,name='student_notification'),
+    path('Student/Mark_as_done/<str:status>',Student_Views.STUDENT_NOTIFICATION_MARK,name='student_notification_mark'),
 
     #this is About Us page
     path('About-Us',views.ABOUT_US,name="about_us"),
