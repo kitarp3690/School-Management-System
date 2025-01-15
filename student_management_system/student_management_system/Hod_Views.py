@@ -66,6 +66,7 @@ def ADD_STUDENT(request):
         course_id=request.POST.get('course_id')#this is grade
         batch_id = request.POST.get('batch_id')
         print(f'cid={course_id},{Batch.objects.all().order_by('-batch_start')[:2][1]},b_id={batch_id}')
+        print(f'{type(course_id)},{type(Batch.objects.all().order_by('-batch_start')[:2][1])},{type(batch_id)}')
         content={
             'profile_pic' : profile_pic if profile_pic else None,
             'first_name' : first_name,
@@ -80,8 +81,9 @@ def ADD_STUDENT(request):
         }
 
         #latest batch id needed for validation
+        latest_batch_id = Batch.objects.all().order_by('-batch_start')[:2][0].id
         previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id
-        print(previous_batch_id)
+        print(previous_batch_id,latest_batch_id)
             
 
         # Validate if the email is a Gmail address
@@ -104,14 +106,21 @@ def ADD_STUDENT(request):
         # print(f'cid={course_id}{type(course_id)},b_id={batch_id}{type(batch_id)},pb_id={previous_batch_id}{type(previous_batch_id)}')
 
         # Validate course_id
+        print(f'course_id= {course_id}, batch_id={batch_id}, previous_batch_id={previous_batch_id}')
         if course_id == "":
             messages.error(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
-        # elif int(course_id)==5 and int(batch_id)==previous_batch_id:
-        #     print('its in elif')
-        #     messages.error(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
-        #     return render(request,'Hod/add_student.html',content) 
+        elif int(course_id)==5 and int(batch_id)==previous_batch_id:
+            print('its in elif')
+            messages.error(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
+            return render(request,'Hod/add_student.html',content) 
+        
+        elif int(course_id)==4 and int(batch_id)==latest_batch_id:
+            print('its in elif')
+            print(f'lat={Batch.objects.all().order_by('-batch_start')[:2][0]},prev={Batch.objects.all().order_by('-batch_start')[:2][1]}')
+            messages.error(request, f"Grade 12 can only be assigned to previous batch that is {Batch.objects.all().order_by('-batch_start')[:2][1]}")
+            return render(request,'Hod/add_student.html',content) 
         
         if batch_id == "":
             messages.error(request, 'Please select a valid course')
@@ -151,8 +160,8 @@ def ADD_STUDENT(request):
             main_roll = str(start_roll) + padded_roll 
             while Student.objects.filter(rollno=main_roll).exists():
                 # If the main_roll exists, increment the roll number by 1 and update the main_roll
-                roll += 1
-                padded_roll = str(roll).zfill(3)  # Re-pad the roll to 3 digits
+                end_roll += 1
+                padded_roll = str(end_roll).zfill(3)  # Re-pad the roll to 3 digits
                 main_roll = str(start_roll) + padded_roll
 
 
