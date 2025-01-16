@@ -80,12 +80,11 @@ def ADD_STUDENT(request):
             'batch' : batches,
         }
 
-        #latest batch id needed for validation
+        #previous and latest batch id needed for validation
         latest_batch_id = Batch.objects.all().order_by('-batch_start')[:2][0].id
         previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id
         print(previous_batch_id,latest_batch_id)
             
-
         # Validate if the email is a Gmail address
         if "@gmail.com" not in email:
             messages.error(request, 'Email must be a Gmail address ending with @gmail.com')
@@ -103,23 +102,21 @@ def ADD_STUDENT(request):
             messages.error(request, 'Please select a valid gender')
             return render(request,'Hod/add_student.html',content)
         
-        # print(f'cid={course_id}{type(course_id)},b_id={batch_id}{type(batch_id)},pb_id={previous_batch_id}{type(previous_batch_id)}')
-
         # Validate course_id
         print(f'course_id= {course_id}, batch_id={batch_id}, previous_batch_id={previous_batch_id}')
         if course_id == "":
-            messages.error(request, 'Please select a valid course')
+            messages.warning(request, 'Please select a valid course')
             return render(request,'Hod/add_student.html',content)
         
         elif int(course_id)==5 and int(batch_id)==previous_batch_id:
             print('its in elif')
-            messages.error(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
+            messages.warning(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
             return render(request,'Hod/add_student.html',content) 
         
         elif int(course_id)==4 and int(batch_id)==latest_batch_id:
             print('its in elif')
             print(f'lat={Batch.objects.all().order_by('-batch_start')[:2][0]},prev={Batch.objects.all().order_by('-batch_start')[:2][1]}')
-            messages.error(request, f"Grade 12 can only be assigned to previous batch that is {Batch.objects.all().order_by('-batch_start')[:2][1]}")
+            messages.warning(request, f"Grade 12 can only be assigned to previous batch that is {Batch.objects.all().order_by('-batch_start')[:2][1]}")
             return render(request,'Hod/add_student.html',content) 
         
         if batch_id == "":
@@ -143,19 +140,9 @@ def ADD_STUDENT(request):
             course=Course.objects.get(id= course_id)
             batch = Batch.objects.get(id=batch_id)
 
-            """#code for generating rollno                   
-            roll = STUDENT_ROLL(course_id)
-            padded_roll = str(roll).zfill(3)  #if roll=2 then padded_roll=002
-            main_roll = str(course) + padded_roll 
-            while Student.objects.filter(rollno=main_roll).exists():
-                # If the main_roll exists, increment the roll number by 1 and update the main_roll
-                roll += 1
-                padded_roll = str(roll).zfill(3)  # Re-pad the roll to 3 digits
-                main_roll = str(course) + padded_roll"""
-            
             #code for generating rollno                   
-            start_roll,end_roll = STUDENT_ROLL(course_id,batch_id)
-            print(f'start_roll={start_roll},edd_roll={end_roll}')
+            """start_roll,end_roll = STUDENT_ROLL(course_id,batch_id)
+            print(f'start_roll={start_roll},end_roll={end_roll}')
             padded_roll = str(end_roll).zfill(3)  #if roll=2 then padded_roll=002
             main_roll = str(start_roll) + padded_roll 
             while Student.objects.filter(rollno=main_roll).exists():
@@ -163,7 +150,8 @@ def ADD_STUDENT(request):
                 end_roll += 1
                 padded_roll = str(end_roll).zfill(3)  # Re-pad the roll to 3 digits
                 main_roll = str(start_roll) + padded_roll
-
+            """
+            main_roll = STUDENT_ROLL(course_id,batch_id)
 
             student=Student(
                 admin=user,
@@ -195,6 +183,7 @@ def VIEW_STUDENT(request):
 @hod_required
 def EDIT_STUDENT(request,id):
     print(f'editid= {id}')
+
     student = Student.objects.filter(id=id)
     StudentId=Student.objects.get(id=id)
     course= Course.objects.all()
@@ -233,6 +222,36 @@ def UPDATE_STUDENT(request):
         gender = request.POST.get('gender')
         course_id=request.POST.get('course_id')
         batch_id = request.POST.get('batch_id')        
+        main_roll = request.POST.get('roll')
+        student_table_id = request.POST.get('studentid')
+
+        studentId = Student.objects.get(id= student_table_id)
+        context = {
+            'student': Student.objects.filter(id = student_table_id),
+            'course': Course.objects.all(),
+            'batch' : Batch.objects.all(),
+            'prev_batch_year_start' : studentId.batch_id.batch_start,
+            'prev_batch_year_end' : studentId.batch_id.batch_end
+        }
+
+        # From here
+        
+        #previous and latest batch id needed for validation
+        latest_batch_id = Batch.objects.all().order_by('-batch_start')[:2][0].id
+        previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id
+        print(previous_batch_id,latest_batch_id)
+            
+        if int(course_id)==5 and int(batch_id)==previous_batch_id:
+            messages.warning(request, f"Grade 11 can only be assigned to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
+            return render(request,'Hod/edit_student.html', context)
+        
+        elif int(course_id)==4 and int(batch_id)==latest_batch_id:
+            messages.warning(request, f"Grade 12 can only be assigned to previous batch that is {Batch.objects.all().order_by('-batch_start')[:2][1]}")
+            return render(request,'Hod/edit_student.html', context)
+        print(f'cid= {course_id}, bid= {batch_id}, sid={studentId.batch_id.id}')
+        if studentId.batch_id != batch_id :
+            mainroll = STUDENT_ROLL(course_id, batch_id)
+        #upto here
 
         user=CustomUser.objects.get(id=student_id)
         
@@ -240,7 +259,7 @@ def UPDATE_STUDENT(request):
         user.last_name=last_name
         user.email=email
         user.username=username
-        user.first_name=first_name
+        # user.first_name=first_name
         if password != None and password!="":
                 user.set_password(password)
         if profile_pic != None and profile_pic!="":
@@ -251,6 +270,7 @@ def UPDATE_STUDENT(request):
         student=Student.objects.get(admin=student_id)
         student.address=address
         student.gender=gender
+        student.rollno = mainroll
 
         course = Course.objects.get(id=course_id)
         student.course_id=course
@@ -453,6 +473,8 @@ def DELETE_STAFF(request,admin):
      messages.success(request,'Staff is deleted sucessfully')
      return redirect('view_staff')
 
+@login_required(login_url='/')
+@hod_required
 def STAFF_SEND_NOTIFICATION(request):
     return render(request,'Hod/staff_notification.html')
 
@@ -580,22 +602,8 @@ def HOD_VIEW_PROFILE_STUDENT(request,id):
     }
     return render(request,'Hod/hod_view_profile_student.html',context)
 
-"""def STUDENT_ROLL(id):
-    # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
-    # for course in courses_with_student_count:
-    #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
-    student_count = Student.objects.filter(course_id=id).count()
-    return student_count"""
-
-def STUDENT_ROLL(s_id,b_id):
-    # courses_with_student_count = Course.objects.annotate(student_count=Count('student'))
-    # for course in courses_with_student_count:
-    #     print(f"Course: {course.name}, Number of Students: {course.student_count}")
-    student_count = Student.objects.filter(course_id=s_id).count()
-    student_batch = Batch.objects.get(id=b_id)
-    starting_roll = student_batch.batch_start
-    return starting_roll,student_count
-
+@login_required(login_url='/')
+@hod_required
 def STAFF_SEND_NOTIFICATION(request):
     staff = Staff.objects.all()
     see_notification = Staff_Notification.objects.all().order_by('-id')[0:5]  #0:5 to show only 5 message
@@ -605,6 +613,8 @@ def STAFF_SEND_NOTIFICATION(request):
     }
     return render(request,'Hod/staff_notification.html',context)
 
+@login_required(login_url='/')
+@hod_required
 def SAVE_STAFF_NOTIFICATION(request):
     if request.method == "POST":
         staff_id = request.POST.get('staff_id')
@@ -619,6 +629,8 @@ def SAVE_STAFF_NOTIFICATION(request):
         messages.success(request, 'Notification sent successfully')
     return redirect('staff_send_notification')
 
+@login_required(login_url='/')
+@hod_required
 def STUDENT_SEND_NOTIFICATION(request):
     student = Student.objects.all()
     see_notification = Student_Notification.objects.all()  #0:5 to show only 5 message
@@ -628,6 +640,8 @@ def STUDENT_SEND_NOTIFICATION(request):
     }
     return render(request,'Hod/student_notification.html',context)
 
+@login_required(login_url='/')
+@hod_required
 def SAVE_STUDENT_NOTIFICATION(request):
     if request.method == "POST":
         student_id = request.POST.get('student_id')
@@ -641,3 +655,25 @@ def SAVE_STUDENT_NOTIFICATION(request):
         messages.success(request, 'Notification sent successfully')
     return redirect('student_send_notification')
 
+def GENERATE_ROLLNO(start_roll:str , end_roll:int )->str:
+    # print(f'start_roll={start_roll},end_roll={end_roll}')
+    padded_roll = str(end_roll).zfill(3)  #if roll=2 then padded_roll=002
+    main_roll = str(start_roll) + padded_roll 
+    while Student.objects.filter(rollno=main_roll).exists():
+        # If the main_roll exists, increment the roll number by 1 and update the main_roll
+        end_roll += 1
+        padded_roll = str(end_roll).zfill(3)  # Re-pad the roll to 3 digits
+        main_roll = str(start_roll) + padded_roll
+    return main_roll
+
+def STUDENT_ROLL(s_id: int, b_id: int) -> str:
+    """
+        s_id: course_id,
+        b_id: batch_id,
+        This generates rollno and returns it as a string
+    """
+    student_count = Student.objects.filter(course_id=s_id).count()
+    student_batch = Batch.objects.get(id=b_id)
+    starting_roll = student_batch.batch_start
+    main_roll = GENERATE_ROLLNO(starting_roll, student_count)
+    return main_roll

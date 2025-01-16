@@ -11,7 +11,7 @@
                       <h5 class="form-title"><span>Edit Student</span></h5>
                    </div>
                     {% if messages %}
-                            {% for message in messages %}
+                        {% for message in messages %}
                             {% if message.tags == 'success' %}
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             {{message}}
@@ -19,14 +19,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
+                            {% else %}
+                              {{message}}
                             {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                      {% comment %} <div class="form-group">
-                         <label> Profile Pic</label>
-                         <input type="file" class="form-control" name="profile_pic" >
-                         <input type="text" class="form-control" name="student_id" value="{% for i in student %}{{i.admin.id}}{%endfor%}" hidden>
-                      </div> {% endcomment %}
+                        {% endfor %}
+                     {% endif %}
+                     <hr>
                       <div class="form-group">
                         <label>Profile Pic</label>
                         {% for stud in student %}
@@ -39,9 +37,15 @@
                            <!-- File input for uploading a new profile picture -->
                            <input type="file" class="form-control" name="profile_pic">
                            <input type="text" class="form-control" name="student_id" value="{{ stud.admin.id }}" hidden>
+                           <input type="text" class="form-control" name="studentid" value="{{ stud.id }}" hidden>
                         {% endfor %}
                      </div>
 
+                   <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                         <input type="text" class="form-control" name="roll" value="{% for i in student %}{{i.rollno}}{% endfor %}" hidden >
+                      </div>
+                   </div>
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>First Name</label>
