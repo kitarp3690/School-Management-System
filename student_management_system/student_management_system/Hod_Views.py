@@ -312,6 +312,10 @@ def ADD_SUBJECT(request):
 @login_required(login_url='/')
 @hod_required
 def ADD_STAFF(request):
+    subjects = Subject.objects.all()
+    context= {
+        'subjects' : subjects
+    }
     if request.method =="POST":
         profile_pic = request.FILES.get('profile_pic')
         first_name = request.POST.get('first_name')
@@ -321,6 +325,8 @@ def ADD_STAFF(request):
         username= request.POST.get('username')
         address = request.POST.get('address')
         gender = request.POST.get('gender')
+        subjects = request.POST.getlist('assigning_subjects')
+        subjects = list(set(subjects))
 
         # print(profile_pic,first_name,last_name,username,password,address,gender,email)
 
@@ -341,10 +347,12 @@ def ADD_STAFF(request):
                 gender= gender,
             )
             staff.save()
+            if subjects:
+                staff.subjects.set(subjects)
             messages.success(request,'Staff is successfully added ! ')
             return redirect('add_staff')
         
-    return render(request,'Hod/add_staff.html')
+    return render(request,'Hod/add_staff.html',context)
 
 @login_required(login_url='/')
 @hod_required
