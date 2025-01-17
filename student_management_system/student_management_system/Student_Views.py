@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from sms.models import Student, Student_Notification
+from sms.models import Student, Student_Notification, Student_Leave
 from django.contrib import messages
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
@@ -73,3 +73,27 @@ def STUDENT_NOTIFICATION_MARK(request,status):
     notification.status = 1
     notification.save()
     return redirect('student_notification')
+
+def STUDENT_APPLY_LEAVE(request):
+    student = Student.objects.get(admin = request.user.id)
+    student_leave_history = Student_Leave.objects.filter(student_id = student)
+    context={
+        'student_leave_history' : student_leave_history,
+    }
+    return render(request,'Student/apply_leave.html',context)
+
+def STUDENT_APPLY_LEAVE_SAVE(request):
+    if request.method == "POST":
+        leave_date = request.POST.get('leave_date')
+        leave_message = request.POST.get('leave_message')
+        
+        student = Student.objects.get(admin = request.user.id)
+
+        leave = Student_Leave(
+            student_id = student,
+            date = leave_date,
+            message = leave_message
+        )
+        leave.save()
+        messages.success(request, 'Leave message successfully sent')
+    return redirect('student_apply_leave')

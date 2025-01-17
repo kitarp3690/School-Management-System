@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification, Student_Notification
+from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification, Student_Notification, Staff_Leave, Student_Leave
 from django.contrib import messages
 from django.db.models import Q, Count
 #for direct link access validation
@@ -685,3 +685,54 @@ def STUDENT_ROLL(s_id: int, b_id: int) -> str:
     starting_roll = student_batch.batch_start
     main_roll = GENERATE_ROLLNO(starting_roll, student_count)
     return main_roll
+
+@login_required(login_url='/')
+@hod_required
+def STAFF_LEAVE_VIEW(request):
+    staff_leave = Staff_Leave.objects.all()
+    context={
+        'staff_leave' : staff_leave,
+    }
+    return render(request, 'Hod/staff_leave.html',context)
+
+@login_required(login_url='/')
+@hod_required
+def STAFF_APPROVE_LEAVE(request, id):
+    leave = Staff_Leave.objects.get(id= id)
+    leave.status = 1 
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='/')
+@hod_required
+def STAFF_DISAPPROVE_LEAVE(request, id):
+    leave = Staff_Leave.objects.get(id= id)
+    leave.status = 2
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='/')
+@hod_required
+def STUDENT_LEAVE_VIEW(request):
+    student_leave = Student_Leave.objects.all()
+    print(f'stude= {student_leave}')
+    context={
+        'student_leave' : student_leave,
+    }
+    return render(request, 'Hod/student_leave.html',context)
+
+@login_required(login_url='/')
+@hod_required
+def STUDENT_APPROVE_LEAVE(request, id):
+    leave = Student_Leave.objects.get(id= id)
+    leave.status = 1 
+    leave.save()
+    return redirect('student_leave_view')
+
+@login_required(login_url='/')
+@hod_required
+def STUDENT_DISAPPROVE_LEAVE(request, id):
+    leave = Student_Leave.objects.get(id= id)
+    leave.status = 2
+    leave.save()
+    return redirect('student_leave_view')

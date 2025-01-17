@@ -104,11 +104,18 @@
                             <label style="font-size: 16px; font-weight: bold; color: #343a40;">Actions</label>
                             <div class="actions">
                                 <a href="{% url 'edit_student' stud_id %}" class="btn btn-sm bg-success-light mr-2">
-                                    <i class="fas fa-pen"></i>
+                                    <i class="fas fa-pen"></i> Edit
                                 </a>
-                                <a href="{% url 'delete_student' stud_main_id %}" class="btn btn-sm bg-danger-light">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <!-- Trigger Modal -->
+                                <script>
+                                    function setDeleteUrl(deleteUrl) {
+                                       document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
+                                    }
+                                 </script>
+                                 <a href="#" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#deleteConfirmationModal" 
+                                    onclick="setDeleteUrl('{% url 'delete_student' stud_main_id %}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                 </a>
                             </div>
                         </div>
                     </div>
@@ -117,5 +124,28 @@
         </div>
     </div>
 </div>
+<!--from here-->
 
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+   <div class="modal-content">
+      <div class="modal-header">
+      <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+      <div class="modal-body">
+      Are you sure you want to delete this student? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <!-- Dynamic URL will be set in this button -->
+      <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+      </div>
+   </div>
+</div>
+</div>
+<!--upto here-->
 {% endblock %}

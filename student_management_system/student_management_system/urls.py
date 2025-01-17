@@ -56,6 +56,18 @@ urlpatterns = [
     path('Staff/Subjects/<str:id>',Staff_Views.STAFF_VIEW_SUBJECTS,name="staff_view_subjects"),
     path('Staff/Students/<str:id>',Staff_Views.STAFF_VIEW_STUDENTS,name="staff_view_students"),
 
+    #for leave application
+    path('Staff/Apply_Leave',Staff_Views.STAFF_APPLY_LEAVE,name = "staff_apply_leave"),
+    path('Staff/Apply_Leave_save',Staff_Views.STAFF_APPLY_LEAVE_SAVE,name = "staff_apply_leave_save"),
+    path('Hod/Staff/Leave_view',Hod_Views.STAFF_LEAVE_VIEW,name = "staff_leave_view"),
+    path('Hod/Staff/approve_leave/<str:id>',Hod_Views.STAFF_APPROVE_LEAVE,name = "staff_approve_leave"),
+    path('Hod/Staff/disapprove_leave/<str:id>',Hod_Views.STAFF_DISAPPROVE_LEAVE,name = "staff_disapprove_leave"),
+    path('Student/Apply_Leave',Student_Views.STUDENT_APPLY_LEAVE,name = "student_apply_leave"),
+    path('Student/Apply_Leave_save',Student_Views.STUDENT_APPLY_LEAVE_SAVE,name = "student_apply_leave_save"),
+    path('Hod/Student/Leave_view',Hod_Views.STUDENT_LEAVE_VIEW,name = "student_leave_view"),
+    path('Hod/Student/approve_leave/<str:id>',Hod_Views.STUDENT_APPROVE_LEAVE,name = "student_approve_leave"),
+    path('Hod/Student/disapprove_leave/<str:id>',Hod_Views.STUDENT_DISAPPROVE_LEAVE,name = "student_disapprove_leave"),
+
     #profile Update
     path('profile',views.PROFILE,name='profile'),
     
