@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from sms.models import Student, Student_Notification, Student_Leave
+from sms.models import Student, Student_Notification, Student_Leave, StudentResult
 from django.contrib import messages
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
@@ -97,3 +97,12 @@ def STUDENT_APPLY_LEAVE_SAVE(request):
         leave.save()
         messages.success(request, 'Leave message successfully sent')
     return redirect('student_apply_leave')
+
+def VIEW_RESULT(request):
+    student = Student.objects.get(admin = request.user.id)
+    result = StudentResult.objects.filter(student_id = student)
+
+    context= {
+        'result': result,
+    }
+    return render(request, 'Student/view_result.html',context)

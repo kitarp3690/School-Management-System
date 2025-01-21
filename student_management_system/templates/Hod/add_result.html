@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col">
+               <h3 class="page-title">Add Result</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item">Dashboard</a></li>
+                  <li class="breadcrumb-item active">Add Result</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      {% include 'includes/messages.html' %}
+      {% if action is None %}
+      <form method="post" action="?action=Show-Students">
+      {% csrf_token %}
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Add Result</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Grade</label>
+                                <select class="form-control" name="course_id" required>
+                                    <option value="">Select Grade</option>
+                                     {% for i in courses %}
+                                        <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="form group">
+                            <label>Batch Year</label>
+                                 <select class="form-control" name="batch_year_id" required>
+                                     <option value="">Select Batch Year</option>
+                                     {% for i in batches %}
+                                     <option value="{{i.id}}">{{i.batch_start}} TO {{i.batch_end}}</option>
+                                     {% endfor %}
+                                  </select>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="col-10 mr-3">
+                        <br>
+                        <div class="col-10 mr-3">
+                            <button type="submit" class= "btn btn-primary">Fetch Student</button>
+                        </div>
+                    </div>
+                    <hr>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</form>
+{% else %}
+    <form method="post" action="{% url 'hod_save_result' %}" > 
+    {% csrf_token %} 
+        <div class="row"> 
+            <div class="col-sm-12"> 
+                <div class="card"> 
+                    <div class="card-body"> 
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class "form-title"> <span>Add Result</span></h5> 
+                            </div> 
+                        <div class="col-12 col-sm-6"> 
+                        <div class="form-group"> 
+                        <label> Subject</label> 
+                            <select class="form-control" name="subject_id"> 
+                                {% for i in get_subject %}
+                                <option value="{{i.id}}">{{i.name}}</option> 
+                                {% endfor %}
+                            </select>
+                        </div>
+                        </div>
+                        <hr>
+                        <div class="col-12 col-sm-12">
+                            <div class="form-group">
+                            <label>Student List</label>
+                            <select class="form-control" name="student_id">
+                            {% for i in students %}
+                                <option value="{{ i.admin.id }}">roll ( {{ i.rollno }} ): {{ i.admin.first_name }} {{ i.admin.last_name }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Internal Marks</label>
+                            <input type="number" class="form-control" name="internal_mark">
+                        </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Exam Marks</label>
+                            <input type="number" class="form-control" name="exam_mark">
+                        </div>
+                        </div>
+                        <br>
+                
+                        <div class="col-10 mr-3">
+                            <button type="submit" class="btn btn-primary">Add Result</button>
+                        </div>
+                        </div>
+                    <hr>
+                    </div>
+                    </div>
+  </div>
+  </div>
+</form>
+{% endif %}
+</div>
+
+{% endblock %}
+    
+    

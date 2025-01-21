@@ -47,6 +47,9 @@
              <li class="{% active_link  'student_send_notification' 'active' %}">
                 <a href="{% url 'student_send_notification' %}"><i class= "fa fa-bell"></i> <span> Send Student Notification</span></a>
              </li>
+             <li class="{% active_link  'hod_add_result' 'active' %}">
+                <a href="{% url 'hod_add_result' %}"><i class="fa fa-poll" aria-hidden="true" ></i> <span> Add result</span></a>
+             </li>
              <li class="{% active_link  'staff_leave_view' 'active' %}">
                 <a href="{% url 'staff_leave_view' %}"><i class= "fas fa-envelope"></i> <span> Staff Leave</span></a>
              </li>
@@ -103,11 +106,14 @@
               <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
            </li>
            
-            <li class="{% active_link  'view_student' 'active' %}">
+            <li class="{% active_link  'view_stud' 'active' %}">
               <a href="{% url 'view_stud'%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
            </li>
             <li class="{% active_link  'view_subject' 'active' %}">
               <a href="{% url 'view_subject'%}"><i class="fas fa-solid fa-book"></i> <span>View Subjects</span></a>
+           </li> 
+            <li class="{% active_link  'view_result' 'active' %}">
+              <a href="{% url 'view_result'%}"><i class="fa fa-poll" aria-hidden="true" ></i> <span>View Result</span></a>
            </li> 
              <li class="{% active_link  'student_notification' 'active' %}">
                 <a href="{% url 'student_notification' %}"><i class= "fa fa-bell"></i> <span> Notification</span></a>

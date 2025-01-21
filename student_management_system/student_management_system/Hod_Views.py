@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification, Student_Notification, Staff_Leave, Student_Leave
+from sms.models import Course, Batch, CustomUser, Student, Staff, Subject, Staff_Notification, Student_Notification, Staff_Leave, Student_Leave, StudentResult
 from django.contrib import messages
 from django.db.models import Q, Count
 #for direct link access validation
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from functools import wraps
+from django.urls import reverse
+
 
 def hod_required(view_func):
     @wraps(view_func)
@@ -736,3 +738,83 @@ def STUDENT_DISAPPROVE_LEAVE(request, id):
     leave.status = 2
     leave.save()
     return redirect('student_leave_view')
+
+@login_required(login_url='/')
+@hod_required
+def HOD_ADD_RESULT(request):
+    courses = Course.objects.all()
+    batches = Batch.objects.all().order_by('-batch_start')[:2]
+    action = request.GET.get('action')
+
+    get_subject = None
+    students = None
+    
+    #previous and latest batch id needed for validation
+    latest_batch_id = Batch.objects.all().order_by('-batch_start')[:2][0].id
+    previous_batch_id = Batch.objects.all().order_by('-batch_start')[:2][1].id    
+
+
+    if action is not None:
+        if request.method == "POST":
+            course_id = request.POST.get('course_id')
+            batch_id = request.POST.get('batch_year_id')
+            students  = Student.objects.filter(course_id = course_id)
+
+            get_subject = Subject.objects.filter(course_id = course_id)
+            if int(course_id)==5 and int(batch_id)==previous_batch_id:
+                print('its in elif')
+                messages.warning(request, f"Grade 11 can only falls to latest batch that is {Batch.objects.all().order_by('-batch_start')[:2][0]}")
+                return redirect('hod_add_result')
+            
+            elif int(course_id)==4 and int(batch_id)==latest_batch_id:
+                print('its in elif')
+                print(f'lat={Batch.objects.all().order_by('-batch_start')[:2][0]},prev={Batch.objects.all().order_by('-batch_start')[:2][1]}')
+                messages.warning(request, f"Grade 12 can only falls to previous batch that is {Batch.objects.all().order_by('-batch_start')[:2][1]}")
+                return redirect('hod_add_result')
+
+    
+
+    context = {
+        'courses' : courses,
+        'batches' : batches, 
+        'action' : action,
+        'get_subject' : get_subject,
+        'students' : students,
+    }
+    return render(request, 'Hod/add_result.html',context )
+
+def HOD_SAVE_RESULT(request):
+    subject_id = request.POST.get('subject_id')
+    student_id = request.POST.get('student_id')
+    internal_mark = request.POST.get('internal_mark')
+    exam_mark = request.POST.get('exam_mark')
+
+    if int(exam_mark)<0 or int(exam_mark)>80:
+        messages.error(request,'Please enter a valid exam mark [0 to 80]')
+        return redirect ('hod_add_result')
+    
+
+    get_student = Student.objects.get(admin = student_id )
+    get_subject = Subject.objects.get(id = subject_id )
+
+    check_exists = StudentResult.objects.filter(subject_id = get_subject, student_id= get_student).exists()
+    if check_exists:
+        result = StudentResult.objects.get(subject_id = get_subject, student_id = get_student)
+        result.internal_mark = internal_mark
+        result.exam_mark = exam_mark
+        result.save()
+        messages.success(request,'Result is Successfully Updated')
+        return redirect ('hod_add_result')
+
+    else:
+        result = StudentResult(
+            student_id = get_student,
+            subject_id = get_subject,
+            exam_mark = exam_mark,
+            internal_mark = internal_mark
+        )
+        result.save()
+        messages.success(request,'Result is Successfully Added')
+        return redirect ('hod_add_result')
+
+    return None

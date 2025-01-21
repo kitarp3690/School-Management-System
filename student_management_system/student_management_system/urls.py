@@ -68,6 +68,12 @@ urlpatterns = [
     path('Hod/Student/approve_leave/<str:id>',Hod_Views.STUDENT_APPROVE_LEAVE,name = "student_approve_leave"),
     path('Hod/Student/disapprove_leave/<str:id>',Hod_Views.STUDENT_DISAPPROVE_LEAVE,name = "student_disapprove_leave"),
 
+    #for Result
+    path('Hod/Add/Result',Hod_Views.HOD_ADD_RESULT,name='hod_add_result'),
+    path('Hod/Save/Result',Hod_Views.HOD_SAVE_RESULT,name='hod_save_result'),
+    path('Student/View/Result',Student_Views.VIEW_RESULT,name='view_result'),
+
+
     #profile Update
     path('profile',views.PROFILE,name='profile'),
     
@@ -75,7 +81,7 @@ urlpatterns = [
     #this is student Urls
 
     path('Student/Home',Student_Views.Home,name='student_home'),
-    path('Student/View',Student_Views.VIEW_STUD,name="view_stud"),
+    path('Student/View/Students',Student_Views.VIEW_STUD,name="view_stud"),
     path('Student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
     path('Hod/Student/Send_Notification',Hod_Views.STUDENT_SEND_NOTIFICATION,name='student_send_notification'),
     path('Hod/Student/Save_Notification',Hod_Views.SAVE_STUDENT_NOTIFICATION,name='save_student_notification'),
