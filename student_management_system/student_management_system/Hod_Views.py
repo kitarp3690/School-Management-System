@@ -616,7 +616,7 @@ def HOD_VIEW_PROFILE_STUDENT(request,id):
 @hod_required
 def STAFF_SEND_NOTIFICATION(request):
     staff = Staff.objects.all()
-    see_notification = Staff_Notification.objects.all().order_by('-id')[0:5]  #0:5 to show only 5 message
+    see_notification = Staff_Notification.objects.all().order_by('-id')[0:20]  #0:5 to show only 5 message
     context={
         'staff': staff,
         'see_notification': see_notification,
@@ -643,7 +643,8 @@ def SAVE_STAFF_NOTIFICATION(request):
 @hod_required
 def STUDENT_SEND_NOTIFICATION(request):
     student = Student.objects.all()
-    see_notification = Student_Notification.objects.all()  #0:5 to show only 5 message
+    # see_notification = Student_Notification.objects.all()  #0:5 to show only 5 message
+    see_notification = Student_Notification.objects.all().order_by('-id')[0:20]  #0:5 to show only 5 message
     context={
         'student': student,
         'see_notification': see_notification,
@@ -783,6 +784,8 @@ def HOD_ADD_RESULT(request):
     }
     return render(request, 'Hod/add_result.html',context )
 
+@login_required(login_url='/')
+@hod_required
 def HOD_SAVE_RESULT(request):
     subject_id = request.POST.get('subject_id')
     student_id = request.POST.get('student_id')
@@ -791,6 +794,10 @@ def HOD_SAVE_RESULT(request):
 
     if int(exam_mark)<0 or int(exam_mark)>80:
         messages.error(request,'Please enter a valid exam mark [0 to 80]')
+        return redirect ('hod_add_result')
+    
+    if int(internal_mark)<0 or int(internal_mark)>25:
+        messages.error(request,'Please enter a valid internal mark [0 to 25]')
         return redirect ('hod_add_result')
     
 
@@ -818,3 +825,33 @@ def HOD_SAVE_RESULT(request):
         return redirect ('hod_add_result')
 
     return None
+
+@login_required(login_url='/')
+@hod_required
+def SEND_NOTIFICATION_TO_ALL_STUDENTS(request):
+    if request.method == "POST":
+        message = request.POST.get('message')
+        students = Student.objects.all()
+        for student in students:
+            stud_notification = Student_Notification(
+                student_id=student,
+                message=message,
+            )
+            stud_notification.save()
+        messages.success(request, 'Notification sent to all students successfully.')
+    return redirect('student_send_notification')
+
+@login_required(login_url='/')
+@hod_required
+def SEND_NOTIFICATION_TO_ALL_STAFFS(request):
+    if request.method == "POST":
+        message = request.POST.get('message')
+        staffs = Staff.objects.all()
+        for staff in staffs:
+            staff_notification = Staff_Notification(
+                staff_id=staff,
+                message=message,
+            )
+            staff_notification.save()
+        messages.success(request, 'Notification sent to all staffs successfully.')
+    return redirect('staff_send_notification')

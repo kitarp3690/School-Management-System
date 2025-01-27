@@ -22,6 +22,7 @@ urlpatterns = [
     path('Hod/Student/Edit/<str:id>',Hod_Views.EDIT_STUDENT,name='edit_student'),
     path('Hod/Student/Update',Hod_Views.UPDATE_STUDENT,name='update_student'),
     path('Hod/Student/Delete/<str:admin>',Hod_Views.DELETE_STUDENT,name='delete_student'),
+    path('Hod/Student/Send_Notification_to_all', Hod_Views.SEND_NOTIFICATION_TO_ALL_STUDENTS, name='send_notification_to_all_students'),
 
     #for session
     path('Hod/Batch/Add',Hod_Views.ADD_BATCH,name='add_batch'),
@@ -48,6 +49,7 @@ urlpatterns = [
     path('Hod/View_Profile_Student/<int:id>/', Hod_Views.HOD_VIEW_PROFILE_STUDENT, name="hod_view_profile_student"),
     path('Hod/Staff/Send_Notification',Hod_Views.STAFF_SEND_NOTIFICATION,name='staff_send_notification'),
     path('Hod/Staff/Save_Notification',Hod_Views.SAVE_STAFF_NOTIFICATION,name='save_staff_notification'),
+    path('Hod/Staff/Send_Notification_to_all', Hod_Views.SEND_NOTIFICATION_TO_ALL_STAFFS, name='send_notification_to_all_staffs'),
     path('Staff/Notifications',Staff_Views.NOTIFICATIONS,name='notifications'),
     path('Staff/Mark_as_done/<str:status>',Staff_Views.STAFF_NOTIFICATION_MARK,name='staff_notification_mark'),
     path('Staff/Home',Staff_Views.HOME,name='staff_home'),
@@ -55,6 +57,8 @@ urlpatterns = [
     path('Staff/Password',Staff_Views.STAFF_NEW_PASSWORD,name="staff_new_password"),
     path('Staff/Subjects/<str:id>',Staff_Views.STAFF_VIEW_SUBJECTS,name="staff_view_subjects"),
     path('Staff/Students/<str:id>',Staff_Views.STAFF_VIEW_STUDENTS,name="staff_view_students"),
+    path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
+    path('Staff/Save_Attendance',Staff_Views.STAFF_SAVE_ATTENDANCE,name='staff_save_attendance'),
 
     #for leave application
     path('Staff/Apply_Leave',Staff_Views.STAFF_APPLY_LEAVE,name = "staff_apply_leave"),

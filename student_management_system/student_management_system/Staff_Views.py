@@ -6,9 +6,69 @@ def HOME(request):
     return render(request,'Staff/home.html')
 
 def STAFF_TAKE_ATTENDANCE(request):
-    # staff_id = Staff.objects.get(admin = request.user.id)
-    # subject = Subject.objects.filter()
-    return render(request,'Staff/take_attendance.html')
+    staff_id = Staff.objects.get(admin = request.user.id)
+    subject = staff_id.subjects.all()
+    batch_year = Batch.objects.all().order_by('-batch_start')[:2]
+    action = request.GET.get('action')
+    
+    get_subject = None
+    students = None
+    get_batch_year = None
+    
+    if action is not None:
+        if request.method == "POST":
+            subject_id = request.POST.get('subject_id')
+            batch_year_id = request.POST.get('batch_year_id')
+
+            get_subject = Subject.objects.get(id = subject_id)
+            get_batch_year = Batch.objects.get(id=batch_year_id)
+
+            subject = Subject.objects.filter(id = subject_id)
+
+            for i in subject:
+                student_id = i.course_id
+                students = Student.objects.filter(course_id = student_id)
+
+    context={
+        'subject' : subject,
+        'batches' : batch_year,
+        'get_subject' : get_subject,
+        'get_batch_year' : get_batch_year,
+        'action' : action,
+        'students' : students,
+    }
+    print(subject)
+    return render(request,'Staff/take_attendance.html',context)
+
+def STAFF_SAVE_ATTENDANCE(request):
+    subject_id = request.POST.get('subject_id')
+    batch_year_id = request.POST.get('batch_year_id')
+    attendance_date = request.POST.get('attendance_date')
+    student_id = request.POST.getlist('student_id')
+
+    get_subject = Subject.objects.get(id = subject_id)
+    get_batch_year = Batch.objects.get(id=batch_year_id)
+
+    attendance = Attendance(
+        subject_id = get_subject,
+        attendance_date = attendance_date,
+        batch_year_id = get_batch_year,
+    )
+    attendance.save()
+
+    for i in student_id:
+        stud_id = i
+        int_stud = int(stud_id)
+
+        present_students = Student.objects.get(id = int_stud)
+        attendance_report = Attendance_Report(
+            student_id = present_students,
+            attendance_id = attendance,
+        )
+        attendance_report.save()
+        
+    messages.success(request,f'{attendance_date} attendance is successfully added')
+    return redirect('staff_take_attendance')
 
 def STAFF_NEW_PASSWORD(request):
     if request.method == "POST":

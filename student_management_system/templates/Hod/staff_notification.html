@@ -12,6 +12,10 @@
              </ul>
           </div>
           <div class="col-auto text-right float-right ml-auto">
+            <!-- Button trigger modal for all notifications -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendNotificationToAll">
+                Send Notification to All
+            </button>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
             View All Notification
@@ -71,7 +75,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">View All Notification</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -85,14 +89,16 @@
                         <table id="table_id"class="table table-hover table-center mb-0 ">
                             <thead>
                                 <tr>
+                                    <th style="width:50%">Email</th>
                                     <th style="width:50%">Message</th>
-                                    <th style="width:30%">Sent Time</th>
-                                    <th style="width:30%" class="text-right">Status</th>
+                                    <th style="width:20%">Sent Time</th>
+                                    <th style="width:20%" class="text-right">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {%for i in see_notification %}
                                 <tr>
+                                    <td>{{i.staff_id.admin.email}}</td>
                                     <td>{{i.message}}</td>
                                     <td>{{i.created_at|date:"D, d M Y H:i:s"}}</td>
                                     {% if i.status == 0 %}
@@ -145,4 +151,29 @@
     </div>
     </div>
 {% endfor %}
+<!-- Modal for Sending Notification to All -->
+<div class="modal fade" id="sendNotificationToAll" tabindex="-1" role="dialog" aria-labelledby="sendNotificationToAllTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sendNotificationToAllTitle">Send Notification to All Staff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'send_notification_to_all_staffs' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" name="message" rows="4" placeholder="Enter your message here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning">Send Notification</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

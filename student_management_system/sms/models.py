@@ -66,19 +66,19 @@ class Staff(models.Model):
     def __str__(self):
         return self.admin.username
 
-class Attendence(models.Model):
+class Attendance(models.Model):
     subject_id=models.ForeignKey(Subject,on_delete=models.DO_NOTHING)
-    attendence_date=models.DateField()
-    Session_Year_id=models.ForeignKey(Batch,on_delete=models.DO_NOTHING)
+    attendance_date=models.DateField()
+    batch_year_id=models.ForeignKey(Batch,on_delete=models.DO_NOTHING)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.subject_id.name
     
-class Attendence_Report(models.Model):
+class Attendance_Report(models.Model):
     student_id = models.ForeignKey(Student,on_delete=models.DO_NOTHING)
-    attendence_id= models.ForeignKey(Attendence,on_delete=models.CASCADE)
+    attendance_id= models.ForeignKey(Attendance,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
