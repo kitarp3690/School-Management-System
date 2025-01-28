@@ -192,6 +192,66 @@
                             </p>
                         </div>
                     </div>
+                    {% if user.user_type == '2' %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Address</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ stf_dat.address }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Gender</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ stf_dat.gender }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if user.user_type == '3' %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Roll Number</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ datas.rollno }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Address</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ datas.address }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Gender</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ datas.gender }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Batch</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ batch.batch_start }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 16px; font-weight: bold; color: #343a40;">Grade</label>
+                                <p class="form-control-plaintext" style="background-color: #e9f7fd; padding: 10px; border-radius: 5px; color: #007bff;">
+                                    {{ course.name }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

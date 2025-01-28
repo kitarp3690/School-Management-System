@@ -75,9 +75,6 @@
               <a href="{% url 'hod_home'%}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
             </li>
             </li>
-            <li class="{% active_link  'staff_take_attendance' 'active' %}">
-               <a href="{% url 'staff_take_attendance'%}"><i class="fas fa-holly-berry"></i> <span>Take Attendance</span></a>
-             </li>
             <li class="{% active_link  'staff_view_students' 'active' %}">
               <a href="{% url 'staff_view_students' user.id%}"><i class="fas fa-solid fa-eye"></i> <span>View Students</span></a>
            </li>

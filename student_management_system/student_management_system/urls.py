@@ -15,7 +15,7 @@ urlpatterns = [
     path('profile/update', views.PROFILE_UPDATE, name= 'profile_update'),
     
 
-    path('Hod/Home',Hod_Views.HOME,name='hod_home'),
+    path('Home',Hod_Views.HOME,name='hod_home'),
     #for student
     path('Hod/Student/Add',Hod_Views.ADD_STUDENT,name='add_student'),
     path('Hod/Student/View',Hod_Views.VIEW_STUDENT,name='view_student'),
@@ -53,13 +53,10 @@ urlpatterns = [
     path('Staff/Notifications',Staff_Views.NOTIFICATIONS,name='notifications'),
     path('Staff/Mark_as_done/<str:status>',Staff_Views.STAFF_NOTIFICATION_MARK,name='staff_notification_mark'),
     path('Staff/Home',Staff_Views.HOME,name='staff_home'),
-    path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
     path('Staff/Password',Staff_Views.STAFF_NEW_PASSWORD,name="staff_new_password"),
     path('Staff/Subjects/<str:id>',Staff_Views.STAFF_VIEW_SUBJECTS,name="staff_view_subjects"),
     path('Staff/Students/<str:id>',Staff_Views.STAFF_VIEW_STUDENTS,name="staff_view_students"),
-    path('Staff/Take_Attendance',Staff_Views.STAFF_TAKE_ATTENDANCE,name='staff_take_attendance'),
-    path('Staff/Save_Attendance',Staff_Views.STAFF_SAVE_ATTENDANCE,name='staff_save_attendance'),
-
+    
     #for leave application
     path('Staff/Apply_Leave',Staff_Views.STAFF_APPLY_LEAVE,name = "staff_apply_leave"),
     path('Staff/Apply_Leave_save',Staff_Views.STAFF_APPLY_LEAVE_SAVE,name = "staff_apply_leave_save"),

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/')
 def Home(request):
-    return render(request,'Student/home.html')
+    return redirect('hod_home')
 
 @login_required(login_url='/')
 def VIEW_STUD(request):
