@@ -828,6 +828,60 @@ def HOD_SAVE_RESULT(request):
 
 @login_required(login_url='/')
 @hod_required
+def HOD_VIEW_RESULT(request):
+    courses = Course.objects.all()
+    action = request.GET.get('action')
+
+    get_subject = None
+    students =None
+    course_id = None
+    print(f'a={action}')
+    if action != None:
+        if request.method == "POST":
+            course_id = request.POST.get('course_id')
+            students  = Student.objects.filter(course_id = course_id)
+
+    context={
+        'courses': courses,
+        'students' : students,
+        'get_subject' :get_subject,
+        'action' : action,
+    }
+    print(course_id)
+    return render(request, 'Hod/hod_view_result.html',context)
+
+@login_required(login_url='/')
+@hod_required
+def HOD_VIEW_STUDENT_RESULT(request):
+    student_id = request.POST.get('student_id')
+    student = Student.objects.get(id=student_id)
+    course_id = student.course_id.id
+    subjects = Subject.objects.filter(course_id=course_id)
+    
+    results = []
+    for subject in subjects:
+        try:
+            result = StudentResult.objects.get(student_id=student, subject_id=subject)
+            results.append({
+                'subject_id': subject,
+                'internal_mark': result.internal_mark,
+                'exam_mark': result.exam_mark,
+            })
+        except StudentResult.DoesNotExist:
+            results.append({
+                'subject_id': subject,
+                'internal_mark': '-',
+                'exam_mark': '-',
+            })
+    
+    context = {
+        'results': results,
+        'student': student,
+    }
+    return render(request, 'Hod/view_student_result.html', context)
+
+@login_required(login_url='/')
+@hod_required
 def SEND_NOTIFICATION_TO_ALL_STUDENTS(request):
     if request.method == "POST":
         message = request.POST.get('message')

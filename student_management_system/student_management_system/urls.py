@@ -73,6 +73,8 @@ urlpatterns = [
     path('Hod/Add/Result',Hod_Views.HOD_ADD_RESULT,name='hod_add_result'),
     path('Hod/Save/Result',Hod_Views.HOD_SAVE_RESULT,name='hod_save_result'),
     path('Student/View/Result',Student_Views.VIEW_RESULT,name='view_result'),
+    path('Hod/View/Result',Hod_Views.HOD_VIEW_RESULT,name='hod_view_result'),
+    path('Hod/View/Student/Result',Hod_Views.HOD_VIEW_STUDENT_RESULT,name='hod_view_student_result'),
 
 
     #profile Update
