@@ -10,8 +10,6 @@ Each types of users have their respective features.
 - [Features](#features)
 - [Installation](#installation)
 - [Authors](#authors)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 # Features
