@@ -1,10 +1,24 @@
 from django.shortcuts import render,redirect
 from sms.models import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from functools import wraps
+from django.http import HttpResponseForbidden
 
+def staff_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.user_type == "2":  # staff user_type
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden("ERROR")
+    return _wrapped_view
+
+@login_required(login_url='/')
 def HOME(request):
     return redirect('hod_home')
 
+@login_required(login_url='/')
+@staff_required
 def STAFF_NEW_PASSWORD(request):
     if request.method == "POST":
         old_password = request.POST.get('staff_old_password')
@@ -40,6 +54,9 @@ def STAFF_NEW_PASSWORD(request):
 
     return render(request, 'Staff/staff_new_password.html')
 
+
+@login_required(login_url='/')
+@staff_required
 def STAFF_VIEW_SUBJECTS(request, id):
     staff = Staff.objects.get(admin_id=id)
     assigned_subjects = staff.subjects.all()
@@ -51,6 +68,9 @@ def STAFF_VIEW_SUBJECTS(request, id):
     }
     return render(request, 'Staff/staff_view_subjects.html', context)
 
+
+@login_required(login_url='/')
+@staff_required
 def STAFF_VIEW_STUDENTS(request,id):
     staff = Staff.objects.get(admin_id=id)
     
@@ -65,6 +85,9 @@ def STAFF_VIEW_STUDENTS(request,id):
     }
     return render(request, 'Staff/staff_view_students.html', context)
 
+
+@login_required(login_url='/')
+@staff_required
 def NOTIFICATIONS(request):
     staff = Staff.objects.filter(admin = request.user.id)
     for i in staff:
@@ -75,12 +98,18 @@ def NOTIFICATIONS(request):
     }
     return render(request,'Staff/notifications.html',context)
 
+
+@login_required(login_url='/')
+@staff_required
 def STAFF_NOTIFICATION_MARK(request,status):
     notification = Staff_Notification.objects.get(id= status)
     notification.status = 1
     notification.save()
     return redirect('notifications')
 
+
+@login_required(login_url='/')
+@staff_required
 def STAFF_APPLY_LEAVE(request):
     staff = Staff.objects.filter(admin = request.user.id)
     for i in staff:
@@ -91,6 +120,9 @@ def STAFF_APPLY_LEAVE(request):
     }
     return render(request, 'Staff/apply_leave.html', context)
 
+
+@login_required(login_url='/')
+@staff_required
 def STAFF_APPLY_LEAVE_SAVE(request):
     if request.method=="POST":
         leave_date = request.POST.get('leave_date')

@@ -1878,11 +1878,12 @@ border-radius: 6px 0 0 6px;
 flex-direction: column;
 background-repeat: no-repeat;
 background-position: center;
-/* aspect-ratio: 4 / 3; */
+aspect-ratio: 4 / 3;
 padding: 80px;
 width: 400px;
 display: flex;
-/* background-blend-mode: multiply; */
+background-blend-mode: multiply;
+border: solid;
 }
 .login-wrapper .loginbox .login-right {
     align-items: center;

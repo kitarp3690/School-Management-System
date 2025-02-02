@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% comment %}
 <div class="content container-fluid">
     <div class="page-header">
        <div class="row align-items-center">
           <div class="col">
              <h3 class="page-title">Subject</h3>
              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'student_home'%}">Dashboard</a></li>
                 <li class="breadcrumb-item active">Subject</li>
              </ul>
           </div>
@@ -21,43 +22,18 @@
                 <div class="table-responsive">
                 <li class="breadcrumb-item active" style="color: blue;">Your Subjects</li>
                 <hr>
-                   <table id="table_id"class="table table-hover table-center mb-0 ">
+                   <table id="table_id" class="table table-hover table-center mb-0 ">
                       <thead>
                          <tr>
-                            {% if user.user_type == "1" %}
-                            <th>ID</th>
-                            {% endif %}
                             <th>Subject Name</th>
                             <th>Grade</th>
-                            {% if user.user_type == "1" %}
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                            <th class="text-right">Action</th>
-                            {% endif %}
                          </tr>
                       </thead>
                       <tbody>
                         {%for i in assigned_subjects %}
                         <tr>
-                            {% if user.user_type == "1" %}
-                              <td>{{i.id}}</td>
-                            {% endif %}
                             <td>{{i.name}}</td>
                             <td>{{i.course}}</td>
-                            {% if user.user_type == "1" %}
-                            <td>{{i.created_at}}</td>
-                            <td>{{i.updated_at}}</td>
-                            <td class="text-rigth">
-                                <div class="actions">
-                                    <a href="{% url 'edit_subject' i.id%}" class="btn btn-sm bg-success-light mr-2">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="{% url 'delete_subject' i.id %}" class="btn btn-sm bg-danger-light">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                </div>
-                            </td>
-                            {% endif  %}
                          </tr>
                          {% endfor %}
                       </tbody>
@@ -74,43 +50,18 @@
                 <div class="table-responsive">
                 <li class="breadcrumb-item active" style="color: blue;">Remaining Subjects</li>
                 <hr>
-                   <table id="table_id"class="table table-hover table-center mb-0 ">
+                   <table id="table_id" class="table table-hover table-center mb-0 ">
                       <thead>
                          <tr>
-                            {% if user.user_type == "1" %}
-                            <th>ID</th>
-                            {% endif %}
                             <th>Subject Name</th>
                             <th>Grade</th>
-                            {% if user.user_type == "1" %}
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                            <th class="text-right">Action</th>
-                            {% endif %}
                          </tr>
                       </thead>
                       <tbody>
                         {%for i in remaining_subjects %}
                         <tr>
-                            {% if user.user_type == "1" %}
-                              <td>{{i.id}}</td>
-                            {% endif %}
                             <td>{{i.name}}</td>
                             <td>{{i.course}}</td>
-                            {% if user.user_type == "1" %}
-                            <td>{{i.created_at}}</td>
-                            <td>{{i.updated_at}}</td>
-                            <td class="text-rigth">
-                                <div class="actions">
-                                    <a href="{% url 'edit_subject' i.id%}" class="btn btn-sm bg-success-light mr-2">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="{% url 'delete_subject' i.id %}" class="btn btn-sm bg-danger-light">
-                                        <i class="fas fa-trash"></i>
-                                        </a>
-                                </div>
-                            </td>
-                            {% endif  %}
                          </tr>
                          {% endfor %}
                       </tbody>
@@ -121,4 +72,88 @@
        </div>
     </div>
  </div>
+{% endblock %} {% endcomment %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+       <div class="row align-items-center">
+          <div class="col">
+             <h3 class="page-title">Subject</h3>
+             <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Dashboard</a></li>  <!-- Use Django URL tag -->
+                <li class="breadcrumb-item active">Subject</li>
+             </ul>
+          </div>
+       </div>
+    </div>
+
+    {% include 'includes/messages.html' %}
+
+    <!-- Assigned Subjects Table -->
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="card card-table">
+             <div class="card-body">
+                <div class="table-responsive">
+                   <h4>Your Subjects</h4>  <!-- Added header for clarity -->
+                   <hr>
+                   <table id="assigned_subjects_table" class="table table-hover table-center mb-0">
+                      <thead>
+                         <tr>
+                            <th>Subject Name</th>
+                            <th>Grade</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in assigned_subjects %}
+                        <tr>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.course }}</td>
+                         </tr>
+                         {% endfor %}
+                      </tbody>
+                   </table>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+
+    <!-- Remaining Subjects Table -->
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="card card-table">
+             <div class="card-body">
+                <div class="table-responsive">
+                   <h4>Remaining Subjects</h4>  <!-- Added header for clarity -->
+                   <hr>
+                   <table id="remaining_subjects_table" class="table table-hover table-center mb-0">
+                      <thead>
+                         <tr>
+                            <th>Subject Name</th>
+                            <th>Grade</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in remaining_subjects %}
+                        <tr>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.course }}</td>
+                         </tr>
+                         {% endfor %}
+                      </tbody>
+                   </table>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#assigned_subjects_table').DataTable();
+        $('#remaining_subjects_table').DataTable();
+    });
+</script>
+
 {% endblock %}

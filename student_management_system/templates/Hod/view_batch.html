@@ -7,7 +7,7 @@
           <div class="col">
              <h3 class="page-title">View Batch</h3>
              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
                 <li class="breadcrumb-item active">Batch</li>
              </ul>
           </div>
@@ -39,12 +39,12 @@
                                     <a href="{% url 'edit_batch' i.id%}" class="btn btn-sm bg-success-light mr-2">
                                         <i class="fas fa-pen"></i> Edit
                                     </a>
+                                    <!-- Trigger Modal -->
                                     <script>
                                     function setDeleteUrl(deleteUrl) {
                                        document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
                                     }
                                     </script>
-                                    <!-- Trigger Modal -->
                                     <a href="#" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#deleteConfirmationModal" 
                                        onclick="setDeleteUrl('{% url 'delete_batch' i.id %}')">
                                        <i class="fas fa-trash"></i> Delete

@@ -10,20 +10,7 @@
                    <div class="col-12">
                       <h5 class="form-title"><span>Edit Student</span></h5>
                    </div>
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if message.tags == 'success' %}
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            {{message}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            {% else %}
-                              {{message}}
-                            {% endif %}
-                        {% endfor %}
-                     {% endif %}
+                     {% include 'includes/messages.html' %}
                      <hr>
                       <div class="form-group">
                         <label>Profile Pic</label>
@@ -49,25 +36,25 @@
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>First Name</label>
-                         <input type="text" class="form-control" name="first_name" value="{% for i in student %}{{i.admin.first_name}}{% endfor %}" >
+                         <input type="text" class="form-control" name="first_name" value="{% for i in student %}{{i.admin.first_name}}{% endfor %}" required>
                       </div>
                    </div>
                    <div class="col-12 col-sm-6">
                       <div class="form-group">
                          <label>Last Name</label>
-                         <input type="text" class="form-control" name="last_name" value="{% for i in student %}{{i.admin.last_name}}{% endfor %}" >
+                         <input type="text" class="form-control" name="last_name" value="{% for i in student %}{{i.admin.last_name}}{% endfor %}" required>
                       </div>
                    </div>
                    <div class="col-12 col-sm-6">
                        <div class="form-group">
                           <label>Email </label>
-                         <input type="text" class="form-control" name="email" value="{% for i in student %}{{i.admin.email}}{% endfor %}"  >
+                         <input type="text" class="form-control" name="email" value="{% for i in student %}{{i.admin.email}}{% endfor %}" required >
                         </div>
                    </div>
                    <div class="col-12 col-sm-6">
                        <div class="form-group">
                           <label>Username</label>
-                         <input type="text" class="form-control" name="username" value="{% for i in student %}{{i.admin.username}}{% endfor %}"  >
+                         <input type="text" class="form-control" name="username" value="{% for i in student %}{{i.admin.username}}{% endfor %}" required >
                         </div>
                    </div>
                   <div class="col-12 col-sm-6">
@@ -112,7 +99,7 @@
                   <div class="col-sm-6">
                       <div class="form-group">
                          <label>Address</label>
-                         <textarea class ="form-control" name="address" >{% for i in student %}{{i.address}}{% endfor %}</textarea>
+                         <textarea class ="form-control" name="address" required >{% for i in student %}{{i.address}}{% endfor %}</textarea>
                       </div>
                  </div>
                  <div class="col-12 col-sm-6">

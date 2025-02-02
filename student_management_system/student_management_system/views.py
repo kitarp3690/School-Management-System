@@ -8,8 +8,10 @@ from django.contrib.auth.decorators import login_required
 
 def BASE(request):
     return render(request,'base.html')
+
 def LOGIN(request):
     return render(request,'login.html')
+
 def doLogin(request):
     if request.method=="POST":
         user=EmailBAckEnd.authenticate(request,username=request.POST.get('email'),password=request.POST.get('password'),)
@@ -83,14 +85,6 @@ def PROFILE_UPDATE(request):
         except:
             messages.error(request,'Profile Update Failed')
     return  render(request, 'profile.html')
-
-# def view_student_profile(request, student_id):
-#     student = Student.objects.get(id=student_id)
-#     context = {
-#         'student': student,
-#         'request': request  # Pass the request to the template context
-#     }
-#     return render(request, 'student_profile.html', context)
 
 @login_required(login_url='/')
 def ABOUT_US(request):

@@ -6,7 +6,7 @@
             <div class="col">
                <h3 class="page-title">View Result</h3>
                <ul class="breadcrumb">
-                  <li class="breadcrumb-item">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
                   <li class="breadcrumb-item active">View Result</li>
                </ul>
             </div>
@@ -22,15 +22,15 @@
                <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                           <h5 class="form-title"><span>Add Result</span></h5>
+                           <h5 class="form-title"><span>View Result</span></h5>
                         </div>
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
-                              <label>Grade</label>
-                                <select class="form-control" name="course_id" required>
-                                    <option value="">Select Grade</option>
-                                     {% for i in courses %}
-                                        <option value="{{i.id}}">{{i.name}}</option>
+                              <label>Batch</label>
+                                <select class="form-control" name="batch_id" required>
+                                    <option value="">Select Batch</option>
+                                     {% for i in batches %}
+                                        <option value="{{i.id}}">{{i.batch_start}}</option>
                                     {% endfor %}
                                 </select>
                            </div>

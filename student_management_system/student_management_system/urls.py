@@ -83,7 +83,7 @@ urlpatterns = [
 
     #this is student Urls
 
-    path('Student/Home',Student_Views.Home,name='student_home'),
+    path('Student/Home',Student_Views.HOME,name='student_home'),
     path('Student/View/Students',Student_Views.VIEW_STUD,name="view_stud"),
     path('Student/Password',Student_Views.NEW_PASSWORD,name="new_password"),
     path('Hod/Student/Send_Notification',Hod_Views.STUDENT_SEND_NOTIFICATION,name='student_send_notification'),

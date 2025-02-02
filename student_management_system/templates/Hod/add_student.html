@@ -11,17 +11,7 @@
                                <h5 class="form-title">
                                <span>Add Student</span></h5>
                    </div>
-                      {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                 {{ message }}
-                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                 </button>
-                            </div>
-                         {% endfor %}
-                      {% endif %}
-
+                     {% include 'includes/messages.html' %}
                       <div class="form-group">
                          <label> Profile Pic</label>
                          <input type="file" class="form-control" name="profile_pic" >
@@ -87,13 +77,13 @@
                   <div class="col-sm-6">
                       <div class="form-group">
                          <label>Address</label>
-                         <textarea class ="form-control" name="address" required>{{ address|default:'' }}</textarea>
+                         <textarea class ="form-control" name="address" required>{{ address }}</textarea>
                       </div>
                  </div>
                  <div class="col-12 col-sm-6">
                     <div class="form-group">
                        <label>Password</label>
-                       <input type="password" class="form-control" name="password" value="{{ request.POST.password }}" required>
+                       <input type="password" class="form-control" name="password" required>
                      </div>
                   </div>
                     <div class="col-12">

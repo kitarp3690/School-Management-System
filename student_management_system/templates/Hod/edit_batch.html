@@ -6,7 +6,7 @@
             <div class="col">
                <h3 class="page-title">Edit Batch</h3>
                <ul class="breadcrumb">
-                  <li class="breadcrumb-item">Batch</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'hod_home' %}">Dashboard</a></li>
                   <li class="breadcrumb-item active">Edit Batch</li>
                </ul>
             </div>
@@ -36,14 +36,10 @@
                               <input type="text" class="form-control" name="batch_end" value="{% for i in batch %}{{i.batch_end}}{% endfor %}" required>
                            </div>
                         </div>
-                        <!-- Update Batch Button -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateConfirmationModal">
-                           Update Batch
-                        </button>
-
-                        {% comment %} <div class="col-12 mt-2">
+                        <div class="col-12 mt-2">
                            <button type="submit" class="btn btn-primary">Update Batch</button>
-                        </div> {% endcomment %}
+                        </div> 
+                       
                      </div>
                   </form>
                </div>
@@ -52,32 +48,5 @@
       </div>
    </div>
 </div>
-<!--from here-->
-
-
-<!-- Modal -->
-<div class="modal fade" id="updateConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="updateConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateConfirmationModalLabel">Confirm Update</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to update the batch? This action cannot be undone.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <!-- Submit the form when this button is clicked -->
-                <button type="button" class="btn btn-primary" onclick="submitUpdateForm()">Update</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--upto here-->
-{% endblock %}
-    
+{% endblock %} 
     
