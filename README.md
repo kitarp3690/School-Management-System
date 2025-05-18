@@ -62,6 +62,11 @@ Provide step-by-step instructions on how to install and set up your project loca
 
 - [@Pratik Shrestha](https://www.github.com/kitarp3690)
 
+## Contributors
+
+-.[@Murari Pandey](https://www.github.com/10murari)
+
+
    
        
    
