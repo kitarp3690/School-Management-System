@@ -64,7 +64,7 @@ Provide step-by-step instructions on how to install and set up your project loca
 
 ## Contributors
 
--.[@Murari Pandey](https://www.github.com/10murari)
+- [@Murari Pandey](https://www.github.com/10murari)
 
 
    
