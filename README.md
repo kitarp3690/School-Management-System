@@ -66,6 +66,7 @@ Provide step-by-step instructions on how to install and set up your project loca
 
 - [@Murari Pandey](https://www.github.com/10murari)
 - [@Madhav Bhatta](https://www.github.com/madhavbhatta11)
+- [@Kripesh Bhele](https://www.github.com/krio69)
 
 
    
